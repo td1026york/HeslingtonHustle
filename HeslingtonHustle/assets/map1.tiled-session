@@ -1,0 +1,92 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Users/Tom/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/map1.tmx",
+    "expandedProjectPaths": [
+        "hexagon-pack/Spritesheets",
+        "hexagon-pack",
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "#hexagonAll_sheet": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "#modern_skyscraper": {
+            "scaleInEditor": 1
+        },
+        "C:/Users/Tom/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/map1.tmx": {
+            "scale": 0.043439901337634,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3061.701244813279,
+                "y": 5283.161170561259
+            }
+        },
+        "C:/Users/Tom/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/map1.tmx#hexagonAll_sheet": {
+            "scaleInDock": 1
+        },
+        "Putt Putt Chars.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "hexagonAll_sheet.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 828,
+                "y": 503
+            }
+        },
+        "map1.tmx#hexagonAll_sheet": {
+            "scaleInDock": 0.33
+        },
+        "modern_largeBuilding.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "modern_skyscraper.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Users/Tom/Documents/Uni/ENG/hexagon-pack/Spritesheets",
+    "map.fixedSize": true,
+    "map.height": 100,
+    "map.lastUsedFormat": "tmx",
+    "map.orientation": null,
+    "map.tileHeight": 140,
+    "map.tileWidth": 120,
+    "map.width": 50,
+    "openFiles": [
+        "C:/Users/Tom/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/map1.tmx"
+    ],
+    "project": "map1.tiled-project",
+    "recentFiles": [
+        "C:/Users/Tom/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/map1.tmx",
+        "map1.tmx",
+        "hexagonAll_sheet.tsx",
+        "modern_skyscraper.tsx",
+        "modern_largeBuilding.tsx",
+        "Putt Putt Chars.tsx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 1,
+    "tileset.spacing": 2,
+    "tileset.tileSize": {
+        "height": 140,
+        "width": 120
+    }
+}
