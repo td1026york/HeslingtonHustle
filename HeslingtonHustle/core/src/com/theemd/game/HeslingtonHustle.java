@@ -1,15 +1,12 @@
 package com.theemd.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.renderers.HexagonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -19,12 +16,11 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 
 
-public class HeslingtonHustle extends ApplicationAdapter implements InputProcessor {
+public class HeslingtonHustle extends Game implements InputProcessor {
 	Texture img;
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	HexagonalTiledMapRenderer tiledMapRenderer;
-	TiledMapImageLayer background;
 
 	// Declares variables for later use
 
@@ -49,7 +45,7 @@ public class HeslingtonHustle extends ApplicationAdapter implements InputProcess
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(86/255f, 200/255f, 118/255f, 1);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		// clear screen
@@ -60,9 +56,8 @@ public class HeslingtonHustle extends ApplicationAdapter implements InputProcess
 
 		tiledMapRenderer.render();
 		tiledMapRenderer.getBatch().begin();
-		//tiledMapRenderer.renderImageLayer(background);
 		tiledMapRenderer.getBatch().end();
-		// render tilemap and background
+		// render tilemap
 
 	}
 
@@ -81,6 +76,10 @@ public class HeslingtonHustle extends ApplicationAdapter implements InputProcess
 				camera.translate(0, 32);
 			if (keycode == Input.Keys.S)
 				camera.translate(0, -32);
+
+
+
+			// debugging layers
 			if (keycode == Input.Keys.NUM_1)
 				tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
 			if (keycode == Input.Keys.NUM_2)
