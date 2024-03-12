@@ -13,10 +13,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-
-
-
-public class HeslingtonHustle extends Game implements InputProcessor {
+public class HeslingtonHustle implements Screen, InputProcessor {
+	//Modified to now implement Screen instead of extending game
+	//Seemingly functions as before, however this is not my section
+	final LauncherClass game;
 	Texture img;
 	TiledMap tiledMap;
 	OrthographicCamera camera;
@@ -24,8 +24,8 @@ public class HeslingtonHustle extends Game implements InputProcessor {
 
 	// Declares variables for later use
 
-	@Override
-	public void create () {
+	public HeslingtonHustle (final LauncherClass gam) {
+		this.game = gam;
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		// get size
@@ -44,24 +44,6 @@ public class HeslingtonHustle extends Game implements InputProcessor {
 	}
 
 	@Override
-	public void render () {
-		Gdx.gl.glClearColor(86/255f, 200/255f, 118/255f, 1);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		// clear screen
-
-		camera.update();
-		tiledMapRenderer.setView(camera);
-		// set view of camera
-
-		tiledMapRenderer.render();
-		tiledMapRenderer.getBatch().begin();
-		tiledMapRenderer.getBatch().end();
-		// render tilemap
-
-	}
-
-	@Override
 	public boolean keyUp(int keycode) {
 		return false;
 	}
@@ -76,8 +58,6 @@ public class HeslingtonHustle extends Game implements InputProcessor {
 				camera.translate(0, 32);
 			if (keycode == Input.Keys.S)
 				camera.translate(0, -32);
-
-
 
 			// debugging layers
 			if (keycode == Input.Keys.NUM_1)
@@ -120,6 +100,51 @@ public class HeslingtonHustle extends Game implements InputProcessor {
 
 	public boolean touchCancelled(int a, int b, int c, int d){
 		return false;
+	}
+
+	@Override
+	public void show() {
+
+	}
+
+	@Override
+	public void render(float v) {
+		// Moved code from previous render() class into render(float) class provided by screen, otherwise code was left
+		// unmodified to prevent issues when running the game
+		Gdx.gl.glClearColor(86/255f, 200/255f, 118/255f, 1);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		// clear screen
+
+		camera.update();
+		tiledMapRenderer.setView(camera);
+		// set view of camera
+
+		tiledMapRenderer.render();
+		tiledMapRenderer.getBatch().begin();
+		tiledMapRenderer.getBatch().end();
+		// render tilemap
+	}
+
+	//default methods were added when modifying the HeslingtonHustle class
+	@Override
+	public void resize(int i, int i1) {
+
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	@Override
+	public void hide() {
+
 	}
 
 	@Override
