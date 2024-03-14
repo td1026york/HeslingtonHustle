@@ -2,7 +2,7 @@
 <map version="1.10" tiledversion="1.10.2" orientation="hexagonal" renderorder="right-down" width="20" height="15" tilewidth="120" tileheight="140" infinite="0" hexsidelength="70" staggeraxis="y" staggerindex="odd" nextlayerid="4" nextobjectid="1">
  <tileset firstgid="1" source="hexagonAll_sheet.tsx"/>
  <imagelayer id="2" name="Background" repeatx="1" repeaty="1">
-  <image source="Pictures/grass background.png" trans="00ff00" width="109" height="71"/>
+  <image source="badlogic.jpg" trans="00ff00" width="256" height="256"/>
  </imagelayer>
  <layer id="1" name="Tile Layer 1" width="20" height="15">
   <data encoding="csv">

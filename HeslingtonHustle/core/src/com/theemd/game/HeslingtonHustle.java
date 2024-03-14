@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class HeslingtonHustle implements Screen, InputProcessor {
 	//Modified to now implement Screen instead of extending game
@@ -21,6 +20,13 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	HexagonalTiledMapRenderer tiledMapRenderer;
+	TiledMapImageLayer background;
+
+	boolean upHeld;
+	boolean leftHeld;
+	boolean downHeld;
+	boolean rightHeld;
+
 
 	// Declares variables for later use
 
@@ -38,33 +44,90 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 		tiledMap = new TmxMapLoader().load("mainMap.tmx");
 		tiledMapRenderer = new HexagonalTiledMapRenderer(tiledMap);
 		// load map and renderer
+		//tiledMapRenderer.renderImageLayer(background);
 
 		Gdx.input.setInputProcessor(this);
 		// creates input processor
+
+		System.out.println(tiledMapRenderer.getViewBounds());
+	}
+
+	public void changeInputStatus(int keycode, boolean truthVal){
+		switch (keycode){
+			case Input.Keys.W:
+				upHeld = truthVal;
+				break;
+			case Input.Keys.A:
+				leftHeld = truthVal;
+				break;
+			case Input.Keys.S:
+				downHeld = truthVal;
+				break;
+			case Input.Keys.D:
+				rightHeld = truthVal;
+				break;
+
+		}
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
+		changeInputStatus(keycode, false);
 		return false;
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-			if (keycode == Input.Keys.A)
-				camera.translate(-32, 0);
-			if (keycode == Input.Keys.D)
-				camera.translate(32, 0);
-			if (keycode == Input.Keys.W)
-				camera.translate(0, 32);
-			if (keycode == Input.Keys.S)
-				camera.translate(0, -32);
+		changeInputStatus(keycode, true);
+		keyHeld(keycode);
+		return false;
+	}
 
+	public void keyHeld(int keycode){
+		//System.out.println(upHeld);System.out.println(leftHeld);
+		//System.out.println(downHeld);System.out.println(rightHeld);
+
+		if (leftHeld) {
+			if (camera.position.x - 32 >= 320)
+				camera.translate(-32, 0);
+		}
+		if (rightHeld) {
+			if (camera.position.x + 32 <= 2144)
+				camera.translate(32, 0);
+		}
+		if (upHeld) {
+			if (camera.position.y + 32 <= 1360)
+				camera.translate(0, 32);
+		}
+		if (downHeld) {
+			if (camera.position.y - 32 >= 240)
+				camera.translate(0, -32);
+			}
+
+			//System.out.println(camera.position);
+
+		if (keycode == Input.Keys.EQUALS) {
+			System.out.println(camera.zoom); // Z00M IN
+			if (camera.zoom >= 0.5)
+				camera.zoom -= 0.05;
+		}
+		if (keycode == Input.Keys.MINUS) // Z00M OUT
+			{System.out.println(camera.zoom);
+				if (camera.zoom <= 3.8)
+					camera.zoom += 0.05;
+			}
+
+			//if (keycode == Input.Keys.Q)
+			//	camera.rotate(2, 0, 0, 1);
+			//if (keycode == Input.Keys.E)
+			//	camera.rotate(-2, 0, 0, 1); // rotation mechanic
+
+			System.out.println(tiledMap.getLayers());
 			// debugging layers
 			if (keycode == Input.Keys.NUM_1)
 				tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
 			if (keycode == Input.Keys.NUM_2)
 				tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
-		return false;
 	}
 
 	@Override
