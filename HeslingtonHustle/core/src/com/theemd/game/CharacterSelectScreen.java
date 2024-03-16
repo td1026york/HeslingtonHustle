@@ -5,29 +5,34 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class CharacterSelectScreen implements Screen {
 
     final LauncherClass game;
-    OrthographicCamera camera;
-    Texture char1;
-    Texture char2;
-    Texture char3;
-    Texture char4;
-    int spriteWidth;
-    int spriteHeight;
+    private OrthographicCamera camera;
+    private int spriteWidth;
+    private int spriteHeight;
+    private int screenSizeX;
+    private int screenSizeY;
+    private int selectedChar = 0;
+    private Stage charStage;
+    private FitViewport viewport;
+    private Texture[] charTexture;
 
     public CharacterSelectScreen(final LauncherClass gam) {
         game = gam;
 
-        char1 = new Texture(Gdx.files.internal("characterSelect1.png"));
-        char2 = new Texture(Gdx.files.internal("characterSelect2.png"));
-        char3 = new Texture(Gdx.files.internal("characterSelect3.png"));
-        char4 = new Texture(Gdx.files.internal("characterSelect4.png"));
+        charTexture = new Texture[4];
 
+        for(int i = 0; i < 4; i++){
+            charTexture[i] = new Texture(Gdx.files.internal("characterSelect" + (i+1) +".png"));
+        }
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
@@ -36,6 +41,15 @@ public class CharacterSelectScreen implements Screen {
         spriteHeight = 14*10;
         spriteWidth = 12*10;
 
+        //need to be updated later to be set to the current size of the screen to allow for resizing.
+        screenSizeX = 800;
+        screenSizeY = 480;
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, screenSizeX, screenSizeY);
+
+        viewport = new FitViewport(screenSizeX, screenSizeY, camera);
+        charStage = new Stage(viewport);
     }
 
     @Override
@@ -46,21 +60,42 @@ public class CharacterSelectScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Please choose your character! Then press space to begin the game!", 100, 225);
-        game.batch.draw(char1, 50, 300, spriteWidth, spriteHeight);
-        game.batch.draw(char2, 250, 300, spriteWidth, spriteHeight);
-        game.batch.draw(char3, 50, 50, spriteWidth, spriteHeight);
-        game.batch.draw(char4, 250, 50, spriteWidth, spriteHeight);
+        game.font.draw(game.batch, "Please choose your character! Then press space to begin the game!", 100, 300);
+        game.batch.draw(charTexture[selectedChar], (float) (screenSizeX - spriteWidth) /2, (float) (screenSizeY - spriteHeight) /2, spriteWidth, spriteHeight);
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            game.setScreen((new HeslingtonHustle(game)));
+            HeslingtonHustle myMap = new HeslingtonHustle(game);
+            myMap.setCharacter(selectedChar);
+            game.setScreen(myMap);
             dispose();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            if(selectedChar < 3) {
+                selectedChar++;
+            }
+            else {
+                selectedChar = 0;
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            if(selectedChar > 0) {
+                selectedChar--;
+            }
+            else {
+                selectedChar = 3;
+            }
         }
     }
 
     @Override
     public void resize(int width, int height) {
+        screenSizeX = Gdx.graphics.getWidth();
+        screenSizeY = Gdx.graphics.getWidth();
+        viewport.update(width, height);
+        charStage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -81,9 +116,9 @@ public class CharacterSelectScreen implements Screen {
 
     @Override
     public void dispose() {
-        char1.dispose();
-        char2.dispose();
-        char3.dispose();
-        char4.dispose();
+        for(Texture t : charTexture){
+            t.dispose();
+        }
+        charStage.dispose();
     }
 }

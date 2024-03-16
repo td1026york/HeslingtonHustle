@@ -13,20 +13,26 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 public class HeslingtonHustle implements Screen, InputProcessor {
-	//Modified to now implement Screen instead of extending game
-	//Seemingly functions as before, however this is not my section
+//if possible, rename this class to Map
 	final LauncherClass game;
 	Texture img;
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	HexagonalTiledMapRenderer tiledMapRenderer;
 	TiledMapImageLayer background;
+	int sleepCount = 0;
+	int eatCount = 0;
+	int studyCount = 0;
+	int recCount = 0;
+	//variable to track the current score of the user
+	int score = 30;
 
 	boolean upHeld;
 	boolean leftHeld;
 	boolean downHeld;
 	boolean rightHeld;
-
+	//variable to identify which sprite set to use for the Character
+	int charSelected;
 
 	// Declares variables for later use
 
@@ -50,6 +56,11 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 		// creates input processor
 
 		System.out.println(tiledMapRenderer.getViewBounds());
+	}
+
+	public void setCharacter(int charSelected){
+		this.charSelected = charSelected;
+		System.out.println("Character " + (this.charSelected + 1) + " selected");
 	}
 
 	public void changeInputStatus(int keycode, boolean truthVal){
@@ -187,6 +198,13 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 		tiledMapRenderer.getBatch().begin();
 		tiledMapRenderer.getBatch().end();
 		// render tilemap
+
+		/* Temporary debug method to manually move to the final score screen
+		 */
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+			game.setScreen(new ScoreScreen(game, score));
+			this.dispose();
+		}
 	}
 
 	//default methods were added when modifying the HeslingtonHustle class
@@ -213,6 +231,7 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 	@Override
 	public void dispose () {
 		tiledMap.dispose();
-		img.dispose();
+		//commented out for now since img is never instantiated in this version of the code
+		//img.dispose();
 	}
 }

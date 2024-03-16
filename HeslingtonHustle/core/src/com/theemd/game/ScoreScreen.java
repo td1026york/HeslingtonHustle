@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class HelpScreen implements Screen{
+public class ScoreScreen implements Screen{
     final LauncherClass game;
     private OrthographicCamera camera;
+    private int score;
 
-    public HelpScreen(final LauncherClass gam) {
+    public ScoreScreen(final LauncherClass gam, int s) {
         game = gam;
+        score = s;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -32,13 +34,11 @@ public class HelpScreen implements Screen{
 
         game.batch.begin();
         game.font.setColor(Color.BLACK);
-        game.font.draw(game.batch, "This is the help screen", 20, 150);
-        game.font.draw(game.batch, "[INSERT HELP STUFF HERE]", 20, 100);
-        game.font.draw(game.batch, "Press ESCAPE to return to the main menu", 20, 50);
+        game.font.draw(game.batch, "Final score: " + score + "/100", 20, 150);
+        game.font.draw(game.batch, "Press ENTER play again!", 20, 50);
         game.batch.end();
 
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             game.setScreen(new MainMenuScreen(game));
             this.dispose();
         }

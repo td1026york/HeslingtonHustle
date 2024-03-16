@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LauncherClass extends Game {
-
+//ideally rename this to HeslingtonHustle.java and change in DesktopLauncher
     /** LauncherClass to be run first when the game is opened.
      * Creates a new instance of the class MainMenuScreen and then sets the current screen to it.
      */
