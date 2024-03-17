@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 public class HeslingtonHustle implements Screen, InputProcessor {
 //if possible, rename this class to Map
+	// is this the same class as the PlayScreen?
 	final LauncherClass game;
 	Texture img;
 	TiledMap tiledMap;

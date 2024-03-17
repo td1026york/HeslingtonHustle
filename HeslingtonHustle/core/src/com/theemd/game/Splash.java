@@ -25,8 +25,6 @@ public class Splash extends ScreenAdapter {
 
 
 
-
-
     // drawing
     private SpriteBatch batch;
     private Sprite splash;

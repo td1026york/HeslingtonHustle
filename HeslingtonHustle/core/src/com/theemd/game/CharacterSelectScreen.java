@@ -1,7 +1,5 @@
 package com.theemd.game;
 
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
@@ -35,10 +33,7 @@ public class CharacterSelectScreen implements Screen {
     private int selection;
 
     Texture characters[];
-    Texture char1;
-    Texture char2;
-    Texture char3;
-    Texture char4;
+
     public CharacterSelectScreen(LauncherClass game){
 
         this.game = game;
@@ -67,16 +62,7 @@ public class CharacterSelectScreen implements Screen {
 
         for(int i = 0;i<4;i++){
             characters[i] = new Texture(Gdx.files.internal("characterSelect"+Integer.toString(i) + ".png"));
-
-
         }
-
-        char1 = new Texture(Gdx.files.internal("characterSelect0.png"));
-        char2 = new Texture(Gdx.files.internal("characterSelect1.png"));
-        char3 = new Texture(Gdx.files.internal("characterSelect2.png"));
-        char4 = new Texture(Gdx.files.internal("characterSelect3.png"));
-
-
 
 
         camera = new OrthographicCamera();
@@ -126,10 +112,6 @@ public class CharacterSelectScreen implements Screen {
         font.draw(batch,"SELECT A CHARACTER",300,viewport.getWorldHeight()-20);
 
 
-
-
-
-
         // draws four quadrants with color according to quadrantColor
         //also draws character options
         for (int i = 0; i < quadrantCount; i++) {
@@ -154,17 +136,18 @@ public class CharacterSelectScreen implements Screen {
             // Turns all quadrants white to clear any previous selection, then turns selected quadrant yellow to indicate selection
             if(selection!=-1) {
                 if (confirmation.contains(touchPoint.x, touchPoint.y)) {
-                    game.setScreen(new PlayScreen(game,selection));
+                    HeslingtonHustle playScreen = new HeslingtonHustle(game);
+                    playScreen.setCharacter(selection);
+                    game.setScreen(playScreen);
+//                    game.setScreen(new PlayScreen(game,selection));
                     this.dispose();
                 }
             }
-
 
             for (int i = 0; i < quadrantCount; i++) {
                 if (quadrants[i].contains(touchPoint.x, touchPoint.y)) {
                     for (int j = 0; j < quadrantCount; j++) {
                         quadrantColors[j] = Color.WHITE;
-
 
                     }
                     quadrantColors[i] = Color.YELLOW;
