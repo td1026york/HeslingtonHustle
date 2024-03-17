@@ -2,8 +2,6 @@ package com.theemd.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.renderers.HexagonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -11,8 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import org.w3c.dom.Text;
 
-public class HeslingtonHustle implements Screen, InputProcessor {
+public class HeslingtonHustle extends ApplicationAdapter implements Screen, InputProcessor {
 	//Modified to now implement Screen instead of extending game
 	//Seemingly functions as before, however this is not my section
 	final LauncherClass game;
@@ -20,8 +19,6 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	HexagonalTiledMapRenderer tiledMapRenderer;
-	TiledMapImageLayer background;
-
 	boolean upHeld;
 	boolean leftHeld;
 	boolean downHeld;
@@ -117,10 +114,10 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 					camera.zoom += 0.05;
 			}
 
-			//if (keycode == Input.Keys.Q)
-			//	camera.rotate(2, 0, 0, 1);
-			//if (keycode == Input.Keys.E)
-			//	camera.rotate(-2, 0, 0, 1); // rotation mechanic
+			if (keycode == Input.Keys.Q)
+				camera.rotate(2, 0, 0, 1);
+			if (keycode == Input.Keys.E)
+				camera.rotate(-2, 0, 0, 1); // rotation mechanic
 
 			System.out.println(tiledMap.getLayers());
 			// debugging layers
@@ -183,11 +180,12 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 		tiledMapRenderer.setView(camera);
 		// set view of camera
 
-		tiledMapRenderer.render();
-		tiledMapRenderer.getBatch().begin();
-		tiledMapRenderer.getBatch().end();
-		// render tilemap
+		tiledMapRenderer.render();// render tilemap
+
+
 	}
+
+
 
 	//default methods were added when modifying the HeslingtonHustle class
 	@Override
