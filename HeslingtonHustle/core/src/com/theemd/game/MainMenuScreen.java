@@ -1,7 +1,6 @@
 package com.theemd.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -52,8 +51,8 @@ public class MainMenuScreen implements Screen {
             batch.draw(whiteTextureRegion, buttons[i].x, buttons[i].y, buttons[i].width, buttons[i].height);
         }
         font.getData().setScale(3,3);
-        font.draw(batch,"START", buttons[0].x+100, buttons[0].y+50);
-        font.draw(batch,"HELP", buttons[1].x+100, buttons[1].y+50);
+        font.draw(batch,"HELP", buttons[0].x+100, buttons[0].y+50);
+        font.draw(batch,"START", buttons[1].x+100, buttons[1].y+50);
 
         batch.end();
 
@@ -134,7 +133,7 @@ public class MainMenuScreen implements Screen {
         // Calculate quadrant size and positions
 
         //size - Leaves 50 units top and bottom for confirmation button and prompt for user
-        float quadrantWidth = worldWidth / 2f;
+//        float quadrantWidth = worldWidth / 2f;
         float quadrantHeight = (worldHeight - 100)/ 2f;
 
         // positions
