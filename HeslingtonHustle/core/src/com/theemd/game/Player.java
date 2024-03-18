@@ -101,10 +101,14 @@ public class Player extends Sprite  implements InputProcessor {
         switch(keycode) {
             case Keys.A:
             case Keys.D:
-            case Keys.W:
-            case Keys.S:
                 velocity.x = 0;
                 animationTime = 0;
+                break;
+            case Keys.W:
+            case Keys.S:
+                velocity.y = 0;
+                animationTime = 0;
+                
         }
         return true;
     }
