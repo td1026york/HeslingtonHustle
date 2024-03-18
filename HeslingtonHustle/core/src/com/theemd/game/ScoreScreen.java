@@ -7,13 +7,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+/** Screen used to display the final score attained by the player at the end of the game
+ * Allows the game to be restarted from the MainMenuScreen
+ */
 public class ScoreScreen implements Screen{
     final LauncherClass game;
     private OrthographicCamera camera;
     private int score;
 
-    public ScoreScreen(final LauncherClass gam, int s) {
-        game = gam;
+    /**
+     * Creates a new instance of ScoreScreen and returns it
+     * @param game the final LauncherClass
+     * @param s: the final score attained by the player
+     */
+    public ScoreScreen(final LauncherClass game, int s) {
+        this.game = game;
         score = s;
 
         camera = new OrthographicCamera();

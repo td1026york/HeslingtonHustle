@@ -11,7 +11,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 public class HeslingtonHustle extends ApplicationAdapter implements Screen, InputProcessor {
 	final LauncherClass game;
-	Texture img;
+	//never used, should we remove?
+	//Texture img;
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	HexagonalTiledMapRenderer tiledMapRenderer;
@@ -29,8 +30,6 @@ public class HeslingtonHustle extends ApplicationAdapter implements Screen, Inpu
 	int recCount = 0;
 	//variable to track the current score of the user
 	int score = 30;
-
-	// Declares variables for later use
 
 	public HeslingtonHustle (final LauncherClass gam) {
 		this.game = gam;
@@ -190,19 +189,17 @@ public class HeslingtonHustle extends ApplicationAdapter implements Screen, Inpu
 		tiledMapRenderer.setView(camera);
 		// set view of camera
 
+		// render tilemap
 		tiledMapRenderer.render();
 		tiledMapRenderer.getBatch().begin();
 		tiledMapRenderer.getBatch().end();
-		// render tilemap
 
 		/* Temporary debug method to manually move to the final score screen
 		 */
-		//if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-		//	game.setScreen(new ScoreScreen(game, score));
-		//	this.dispose();
-		//}
-		//tiledMapRenderer.render();// render tilemap
-
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+			game.setScreen(new ScoreScreen(game, score));
+			this.dispose();
+		}
 
 	}
 
