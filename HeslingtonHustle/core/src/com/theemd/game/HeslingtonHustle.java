@@ -19,11 +19,20 @@ public class HeslingtonHustle extends ApplicationAdapter implements Screen, Inpu
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	HexagonalTiledMapRenderer tiledMapRenderer;
+	TiledMapImageLayer background;
+
 	boolean upHeld;
 	boolean leftHeld;
 	boolean downHeld;
 	boolean rightHeld;
-
+	//variable to identify which sprite set to use for the Character
+	int charSelected;
+  int sleepCount = 0;
+	int eatCount = 0;
+	int studyCount = 0;
+	int recCount = 0;
+	//variable to track the current score of the user
+	int score = 30;
 
 	// Declares variables for later use
 
@@ -47,6 +56,11 @@ public class HeslingtonHustle extends ApplicationAdapter implements Screen, Inpu
 		// creates input processor
 
 		System.out.println(tiledMapRenderer.getViewBounds());
+	}
+
+	public void setCharacter(int charSelected){
+		this.charSelected = charSelected;
+		System.out.println("Character " + (this.charSelected + 1) + " selected");
 	}
 
 	public void changeInputStatus(int keycode, boolean truthVal){
@@ -180,7 +194,18 @@ public class HeslingtonHustle extends ApplicationAdapter implements Screen, Inpu
 		tiledMapRenderer.setView(camera);
 		// set view of camera
 
-		tiledMapRenderer.render();// render tilemap
+		tiledMapRenderer.render();
+		tiledMapRenderer.getBatch().begin();
+		tiledMapRenderer.getBatch().end();
+		// render tilemap
+
+		/* Temporary debug method to manually move to the final score screen
+		 */
+		//if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+		//	game.setScreen(new ScoreScreen(game, score));
+		//	this.dispose();
+		//}
+		//tiledMapRenderer.render();// render tilemap
 
 
 	}
@@ -211,6 +236,7 @@ public class HeslingtonHustle extends ApplicationAdapter implements Screen, Inpu
 	@Override
 	public void dispose () {
 		tiledMap.dispose();
-		img.dispose();
+		//commented out for now since img is never instantiated in this version of the code
+		//img.dispose();
 	}
 }
