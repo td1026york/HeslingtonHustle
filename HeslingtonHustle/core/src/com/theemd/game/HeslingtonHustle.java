@@ -2,8 +2,6 @@ package com.theemd.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.renderers.HexagonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -11,22 +9,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import org.w3c.dom.Text;
 
-public class HeslingtonHustle implements Screen, InputProcessor {
-//if possible, rename this class to Map
-	// is this the same class as the PlayScreen?
+public class HeslingtonHustle extends ApplicationAdapter implements Screen, InputProcessor {
+	//Modified to now implement Screen instead of extending game
+	//Seemingly functions as before, however this is not my section
 	final LauncherClass game;
 	Texture img;
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	HexagonalTiledMapRenderer tiledMapRenderer;
 	TiledMapImageLayer background;
-	int sleepCount = 0;
-	int eatCount = 0;
-	int studyCount = 0;
-	int recCount = 0;
-	//variable to track the current score of the user
-	int score = 30;
 
 	boolean upHeld;
 	boolean leftHeld;
@@ -34,6 +27,12 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 	boolean rightHeld;
 	//variable to identify which sprite set to use for the Character
 	int charSelected;
+  int sleepCount = 0;
+	int eatCount = 0;
+	int studyCount = 0;
+	int recCount = 0;
+	//variable to track the current score of the user
+	int score = 30;
 
 	// Declares variables for later use
 
@@ -131,10 +130,10 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 					camera.zoom += 0.05;
 			}
 
-			//if (keycode == Input.Keys.Q)
-			//	camera.rotate(2, 0, 0, 1);
-			//if (keycode == Input.Keys.E)
-			//	camera.rotate(-2, 0, 0, 1); // rotation mechanic
+			if (keycode == Input.Keys.Q)
+				camera.rotate(2, 0, 0, 1);
+			if (keycode == Input.Keys.E)
+				camera.rotate(-2, 0, 0, 1); // rotation mechanic
 
 			System.out.println(tiledMap.getLayers());
 			// debugging layers
@@ -204,11 +203,16 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 
 		/* Temporary debug method to manually move to the final score screen
 		 */
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-			game.setScreen(new ScoreScreen(game, score));
-			this.dispose();
-		}
+		//if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+		//	game.setScreen(new ScoreScreen(game, score));
+		//	this.dispose();
+		//}
+		//tiledMapRenderer.render();// render tilemap
+
+
 	}
+
+
 
 	//default methods were added when modifying the HeslingtonHustle class
 	@Override

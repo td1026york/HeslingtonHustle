@@ -1,5 +1,6 @@
 package com.theemd.game;
 
+
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,54 +13,50 @@ public class Player extends Sprite  implements InputProcessor {
 
     private Vector2 velocity = new Vector2(); // for player movement
 
-    public Player(int character){
+    public Player(int character) {
         this.character = character;
-        velocity.x =0;
-        velocity.y=0;
+        velocity.x = 0;
+        velocity.y = 0;
 
 
-        switch(character){
+        switch (character) {
             case 0:
-                yOffset =64;
-                xOffsett=0;
+                yOffset = 64;
+                xOffsett = 0;
 
                 break;
             case 1:
-                yOffset =64;
-                xOffsett=64;
+                yOffset = 64;
+                xOffsett = 64;
 
                 break;
 
             case 2:
-                yOffset =0;
-                xOffsett=0;
+                yOffset = 0;
+                xOffsett = 0;
 
                 break;
 
             case 3:
-                yOffset =0;
-                xOffsett=64 ;
+                yOffset = 0;
+                xOffsett = 64;
 
                 break;
             default:
-            yOffset =0;
-            xOffsett=0;
+                yOffset = 0;
+                xOffsett = 0;
 
         }
 
     }
 
     @Override
-    public void draw(Batch batch){
-        setRegion(xOffsett,yOffset+cDimensions*2, cDimensions, cDimensions);
-
-
+    public void draw(Batch batch) {
+        setRegion(xOffsett, yOffset + cDimensions * 2, cDimensions, cDimensions);
 
 
         super.draw(batch);
     }
-
-
 
 
     @Override
@@ -107,3 +104,4 @@ public class Player extends Sprite  implements InputProcessor {
         return false;
     }
 }
+
