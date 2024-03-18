@@ -59,6 +59,7 @@ public class PlayScreen extends ScreenAdapter {
         // camera.zoom = 0.5f;
         camera.update();
         // sets up camera
+        player.animate(test);
         Gdx.input.setInputProcessor(player);
 
     }
