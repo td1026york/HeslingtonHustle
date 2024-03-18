@@ -49,7 +49,9 @@ public class HeslingtonHustle implements Screen, InputProcessor {
 		// sets up camera
 
 		tiledMap = new TmxMapLoader().load("mainMap.tmx");
+
 		tiledMapRenderer = new HexagonalTiledMapRenderer(tiledMap);
+
 		// load map and renderer
 		//tiledMapRenderer.renderImageLayer(background);
 

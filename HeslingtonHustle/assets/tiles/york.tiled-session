@@ -1,0 +1,51 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Users/ereif/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/mainMap.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "C:/Users/ereif/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/hexagonAll_sheet.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/ereif/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/mainMap.tmx": {
+            "scale": 0.3676422764227642,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1224.015922158337,
+                "y": 796.970367094206
+            }
+        },
+        "spritesheet.tsx": {
+            "scaleInDock": 0.125,
+            "scaleInEditor": 0.5
+        },
+        "untitled.tmx": {
+            "scale": 0.9420833333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 457.49668288367974,
+                "y": 316.3202122954445
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/ereif/Downloads/KenneyRPGpack/Spritesheet",
+    "map.height": 2,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 2,
+    "openFiles": [
+        "spritesheet.tsx",
+        "untitled.tmx",
+        "C:/Users/ereif/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/mainMap.tmx"
+    ],
+    "project": "york.tiled-project",
+    "recentFiles": [
+        "C:/Users/ereif/Documents/GitHub/HeslingtonHustle/HeslingtonHustle/assets/mainMap.tmx",
+        "spritesheet.tsx",
+        "untitled.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
