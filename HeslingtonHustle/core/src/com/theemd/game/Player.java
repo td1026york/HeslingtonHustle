@@ -79,7 +79,7 @@ public class Player extends Sprite  implements InputProcessor {
         animationTime += delta;
 
         setRegion(velocity.y < 0 ? downWalking.getKeyFrame(animationTime,true) : velocity.y > 0 ? upWalking.getKeyFrame(animationTime,true):
-                 velocity.x < 0 ? rightWalking.getKeyFrame(animationTime,true) : velocity.x > 0 ? rightWalking.getKeyFrame(animationTime,true):
+                 velocity.x < 0 ? leftWalking.getKeyFrame(animationTime,true) : velocity.x > 0 ? rightWalking.getKeyFrame(animationTime,true):
                          still.getKeyFrame(animationTime,true));
 
     }
@@ -138,18 +138,39 @@ public class Player extends Sprite  implements InputProcessor {
 
 
 
-        TextureRegion[] walkFrames = new TextureRegion[4 * 4];
-        int index = 0;
-        for (int i=0; i < 4; i++){
+        TextureRegion[] walkFrames = new TextureRegion[4 * 5];
+
+        for (int j=0; j < 4; j++){
+            if(character%2==0){
+                walkFrames[j] =  new TextureRegion(help,j*16+16,0,-16 ,16);
+                walkFrames[j+4] =  new TextureRegion(help,j*16,0, 16,16);
+            }else{
+                walkFrames[j] =  new TextureRegion(help,j*16,0,16,16);
+                walkFrames[j+4] =  new TextureRegion(help,j*16+16,0, -16 ,16);
+            }
+
+        }
+
+
+        int index = 8;
+        for (int i=1; i < 4; i++){
             for (int j=0; j < 4; j++){
-                walkFrames[index++] =  new TextureRegion(help,j*16,i*16,16,16);;
+
+                walkFrames[index++] =  new TextureRegion(help,j*16,i*16,16,16);
             }
         }
 
+
+        help.flip(true,false);
+
+
+
         rightWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 0, 3));
-        upWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 4, 7));
-        downWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 8, 11));
-        still = new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 12, 14));
+        leftWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 4, 7));
+        upWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 8, 11));
+        downWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 12, 15));
+        still = new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 16, 19));
+
     }
 
     @Override
