@@ -1,9 +1,6 @@
 package com.theemd.game;
 
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.HexagonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -82,18 +80,29 @@ public class PlayScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
-        camera.update();
+
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
         tiledMapRenderer.getBatch().begin();
 
+
+
+
         player.draw(tiledMapRenderer.getBatch(),v);
-        //tiledMapRenderer.getBatch().draw(player.getTexture() ,1,1,.5f,.5f);
+
+        Vector2 max = new Vector2(20,15);
 
         tiledMapRenderer.getBatch().end();
-
+        if(player.getX()<=15 && player.getX()>=5 ) {
+            camera.position.set(player.getX() + player.getWidth() / 2, camera.position.y, 0);
+        }
+        if(player.getY()>=5 && player.getY()<=11) {
+            camera.position.set(camera.position.x, player.getY() + player.getHeight() / 2, 0);
+        }
+        System.out.println(player.getX());
+        System.out.println(player.getY());
+        camera.update();
 
     }
 

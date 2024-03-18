@@ -16,7 +16,7 @@ public class Player extends Sprite  implements InputProcessor {
     int character; // the skin the player chooses
     final int yOffset, xOffsett; // For choosing the quadrant of character a player has chosen walking animations
     final int cDimensions = 16; // each seperate image of a character is 16x16 pixels
-
+    final float speed= 5f;
     private Vector2 velocity = new Vector2(); // for player movement
     private float animationTime;
 
@@ -91,19 +91,19 @@ public class Player extends Sprite  implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch(keycode) {
             case Keys.W:
-                velocity.y = 0.5f;
+                velocity.y = speed;
                 animationTime = 0;
                 break;
             case Keys.A:
-                velocity.x = -0.5f;
+                velocity.x = -speed;
                 animationTime = 0;
                 break;
             case Keys.S:
-                velocity.y = -0.5f;
+                velocity.y = -speed;
                 animationTime = 0;
                 break;
             case Keys.D:
-                velocity.x = 0.5f;
+                velocity.x = speed;
                 animationTime = 0;
         }
         return true;
