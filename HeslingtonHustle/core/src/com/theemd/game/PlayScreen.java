@@ -22,7 +22,7 @@ public class PlayScreen extends ScreenAdapter {
     private String characterSelect;
     Player player;
     TiledMap tiledMap;
-    OrthogonalTiledMapRenderer tiledMapRenderer;
+    HexagonalTiledMapRenderer tiledMapRenderer;
     OrthographicCamera camera;
     Viewport viewport;
     LauncherClass game;
@@ -39,30 +39,31 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        Texture test = new Texture(Gdx.files.internal("Putt Putt Chars.png"));
+
+        Texture test = new Texture(Gdx.files.internal("Characters.png"));
         player.setSize(.5f,.5f);
         player.setTexture(test);
-        player.setPosition(1,1);
+        player.setPosition(10,7.5f);
 
 
 
-        tiledMap = new TmxMapLoader().load("test.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap,1/32f);
+        tiledMap = new TmxMapLoader().load("mainMap.tmx");
+        tiledMapRenderer = new HexagonalTiledMapRenderer(tiledMap,1/120f);
         int x = tiledMap.getProperties().get("width",Integer.class) * tiledMap.getProperties().get("tilewidth",Integer.class);
         int y = tiledMap.getProperties().get("height",Integer.class) * tiledMap.getProperties().get("tileheight",Integer.class);
         camera = new OrthographicCamera( );
-        viewport = new FitViewport(1 ,1,camera);
+        viewport = new FitViewport(5 ,5,camera);
         viewport.apply();
 
         // camera.position.set(0.75f,  1f,0);
         // camera.zoom = 0.5f;
         camera.update();
         // sets up camera
-
+        Gdx.input.setInputProcessor(player);
 
     }
 
-    private void handleInput() {
+   /* private void handleInput() {
         // Zoom in with the up arrow key
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             camera.zoom -= ZOOM_SPEED;
@@ -72,11 +73,11 @@ public class PlayScreen extends ScreenAdapter {
             camera.zoom += ZOOM_SPEED;
         }
     }
-
+*/
 
     @Override
     public void render(float v) {
-        handleInput();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -87,7 +88,7 @@ public class PlayScreen extends ScreenAdapter {
 
         tiledMapRenderer.getBatch().begin();
 
-        player.draw(tiledMapRenderer.getBatch());
+        player.draw(tiledMapRenderer.getBatch(),v);
         //tiledMapRenderer.getBatch().draw(player.getTexture() ,1,1,.5f,.5f);
 
         tiledMapRenderer.getBatch().end();

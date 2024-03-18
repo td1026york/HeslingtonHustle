@@ -1,6 +1,7 @@
 package com.theemd.game;
 
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,6 +13,7 @@ public class Player extends Sprite  implements InputProcessor {
     final int cDimensions = 16; // each seperate image of a character is 16x16 pixels
 
     private Vector2 velocity = new Vector2(); // for player movement
+    private int animationTime;
 
     public Player(int character) {
         this.character = character;
@@ -50,23 +52,61 @@ public class Player extends Sprite  implements InputProcessor {
 
     }
 
-    @Override
-    public void draw(Batch batch) {
-        setRegion(xOffsett, yOffset + cDimensions * 2, cDimensions, cDimensions);
 
+    @Override
+    public void draw(Batch batch,float delta) {
+        setRegion(xOffsett, yOffset + cDimensions * 2, cDimensions, cDimensions);
+        update(delta);
 
         super.draw(batch);
     }
+    public void update(float delta){
+        setX(getX() + velocity.x * delta);
+        setY(getY() + velocity.y * delta);
+
+
+
+    }
+
+
 
 
     @Override
-    public boolean keyDown(int i) {
-        return false;
+    public boolean keyDown(int keycode) {
+        switch(keycode) {
+            case Keys.W:
+                velocity.y = 0.5f;
+                animationTime = 0;
+                break;
+            case Keys.A:
+                velocity.x = -0.5f;
+                animationTime = 0;
+                break;
+            case Keys.S:
+                velocity.y = -0.5f;
+                animationTime = 0;
+                break;
+            case Keys.D:
+                velocity.x = 0.5f;
+                animationTime = 0;
+        }
+        return true;
+
+
+
     }
 
     @Override
-    public boolean keyUp(int i) {
-        return false;
+    public boolean keyUp(int keycode) {
+        switch(keycode) {
+            case Keys.A:
+            case Keys.D:
+            case Keys.W:
+            case Keys.S:
+                velocity.x = 0;
+                animationTime = 0;
+        }
+        return true;
     }
 
     @Override
