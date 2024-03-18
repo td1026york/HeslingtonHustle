@@ -2,18 +2,14 @@ package com.theemd.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.renderers.HexagonalTiledMapRenderer;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import org.w3c.dom.Text;
 
 public class HeslingtonHustle extends ApplicationAdapter implements Screen, InputProcessor {
-	//Modified to now implement Screen instead of extending game
-	//Seemingly functions as before, however this is not my section
 	final LauncherClass game;
 	Texture img;
 	TiledMap tiledMap;
@@ -27,7 +23,7 @@ public class HeslingtonHustle extends ApplicationAdapter implements Screen, Inpu
 	boolean rightHeld;
 	//variable to identify which sprite set to use for the Character
 	int charSelected;
-  int sleepCount = 0;
+  	int sleepCount = 0;
 	int eatCount = 0;
 	int studyCount = 0;
 	int recCount = 0;
