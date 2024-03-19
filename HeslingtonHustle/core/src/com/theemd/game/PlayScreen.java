@@ -5,12 +5,23 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.HexagonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -81,6 +92,7 @@ public class PlayScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
+
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
@@ -129,5 +141,24 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void dispose() {
 
+    }
+
+    private void renderInteractableAreas(){
+        int objectLayerID = 4;
+        TiledMapTileLayer ObjectLayer = (TiledMapTileLayer)tiledMap.getLayers().get(objectLayerID);
+        MapObjects InteractableAreas = ObjectLayer.getObjects();
+
+        for (RectangleMapObject space : InteractableAreas.getByType(RectangleMapObject.class)){
+
+            Rectangle area = space.getRectangle();
+            if (Intersector.overlaps(area, player.getBoundingRectangle())){
+                MapProperties properties = space.getProperties();
+                String name = properties.get("name",String.class);
+
+                InteractableArea interactableArea = new InteractableArea();
+                interactableArea.collidedWithArea(name);
+
+            }
+        }
     }
 }
