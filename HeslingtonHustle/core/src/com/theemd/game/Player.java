@@ -74,6 +74,13 @@ public class Player extends Sprite  implements InputProcessor {
         super.draw(batch);
     }
     public void update(float delta){
+
+        if (getY()>=13 && velocity.y>0){velocity.y=0;}
+        if (getX()<=0.4 && velocity.x<0){velocity.x=0;}
+        if (getY()<=0.3 && velocity.y<0){velocity.y=0;}
+        if (getX()>=19.5 && velocity.x>0){velocity.x=0;} // prevents character from walking off screen
+
+
         setX(getX() + velocity.x * delta);
         setY(getY() + velocity.y * delta);
         animationTime += delta;
