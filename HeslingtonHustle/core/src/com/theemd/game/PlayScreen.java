@@ -1,6 +1,7 @@
 package com.theemd.game;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -112,9 +113,10 @@ public class PlayScreen extends ScreenAdapter {
         if(player.getY()>=2 && player.getY()<=11) {
             camera.position.set(camera.position.x, player.getY() + player.getHeight() / 2, 0);
         }
-        System.out.println(player.getX());
-        System.out.println(player.getY());
+        //System.out.println(player.getX());
+        //System.out.println(player.getY());
         camera.update();
+        //renderInteractableAreas(); Dont uncomment it crashes
 
     }
 
@@ -144,7 +146,7 @@ public class PlayScreen extends ScreenAdapter {
     }
 
     private void renderInteractableAreas(){
-        int objectLayerID = 4;
+        int objectLayerID = 5;
         TiledMapTileLayer ObjectLayer = (TiledMapTileLayer)tiledMap.getLayers().get(objectLayerID);
         MapObjects InteractableAreas = ObjectLayer.getObjects();
 
@@ -154,7 +156,7 @@ public class PlayScreen extends ScreenAdapter {
             if (Intersector.overlaps(area, player.getBoundingRectangle())){
                 MapProperties properties = space.getProperties();
                 String name = properties.get("name",String.class);
-
+                System.out.println(name);
                 InteractableArea interactableArea = new InteractableArea();
                 interactableArea.collidedWithArea(name);
 
