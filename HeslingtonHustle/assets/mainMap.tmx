@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="hexagonal" renderorder="right-down" width="20" height="15" tilewidth="120" tileheight="140" infinite="0" hexsidelength="70" staggeraxis="y" staggerindex="odd" nextlayerid="5" nextobjectid="5">
+<map version="1.10" tiledversion="1.10.2" orientation="hexagonal" renderorder="right-down" width="20" height="15" tilewidth="120" tileheight="140" infinite="0" hexsidelength="70" staggeraxis="y" staggerindex="odd" nextlayerid="6" nextobjectid="8">
  <tileset firstgid="1" source="hexagonAll_sheet.tsx"/>
+ <objectgroup id="5" name="Interactable Areas">
+  <object id="5" name="Study1" x="191.813" y="1034.99" width="327.68" height="327.68"/>
+  <object id="6" name="Rest1" x="1842.2" y="299.708" width="227.778" height="311.696"/>
+  <object id="7" name="Recreation1" x="1946.1" y="919.103" width="263.743" height="375.634"/>
+ </objectgroup>
  <imagelayer id="2" name="Background" repeatx="1" repeaty="1">
   <image source="badlogic.jpg" trans="00ff00" width="256" height="256"/>
  </imagelayer>
- <objectgroup id="4" name="Tiles">
-  <object id="1" x="183.821" y="1015.01" width="355.653" height="383.626">
-   <ellipse/>
-  </object>
-  <object id="3" x="1838.21" y="287.719" width="195.809" height="291.715">
-   <ellipse/>
-  </object>
-  <object id="4" x="1854.19" y="903.119" width="387.622" height="387.622">
-   <ellipse/>
-  </object>
- </objectgroup>
  <layer id="1" name="Tile Layer 1" width="20" height="15">
   <data encoding="csv">
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,69,102,133,
