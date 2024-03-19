@@ -94,10 +94,10 @@ public class PlayScreen extends ScreenAdapter {
         Vector2 max = new Vector2(20,15);
 
         tiledMapRenderer.getBatch().end();
-        if(player.getX()<=15 && player.getX()>=5 ) {
+        if(player.getX()<=18 && player.getX()>=2 ) {
             camera.position.set(player.getX() + player.getWidth() / 2, camera.position.y, 0);
         }
-        if(player.getY()>=5 && player.getY()<=11) {
+        if(player.getY()>=2 && player.getY()<=11) {
             camera.position.set(camera.position.x, player.getY() + player.getHeight() / 2, 0);
         }
         System.out.println(player.getX());
