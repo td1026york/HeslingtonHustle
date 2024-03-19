@@ -37,8 +37,6 @@ public class Splash extends ScreenAdapter {
     LauncherClass game;
     public Splash(LauncherClass game){
         this.game=game;
-
-
     }
     @Override
     public void show() {

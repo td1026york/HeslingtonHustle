@@ -36,9 +36,20 @@ public class PlayScreen extends ScreenAdapter {
     OrthographicCamera camera;
     Viewport viewport;
     LauncherClass game;
-
-
+    //variables to track resources
+    int sleepCount = 0;
+    int eatCount = 0;
+    int studyCount = 0;
+    int recCount = 0;
+    //variable to track the current score of the user
+    int score = 30;
     private static final float ZOOM_SPEED = 0.1f;
+
+    /**
+     * Creates an instance of PlayScreen and returns it
+     * @param game the LauncherClass used throughout the game
+     * @param selection an integer used to determine which character has been selected by the user
+     */
     public PlayScreen(LauncherClass game, int selection){
         this.game = game;
         characterSelect = Integer.toString(selection);

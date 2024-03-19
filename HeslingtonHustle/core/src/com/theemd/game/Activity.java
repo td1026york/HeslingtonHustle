@@ -4,6 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
+/**
+ * Stores information about an activity that may be performed by the player
+ */
 public class Activity {
     private int energyCost;
     private int scoreImpact;

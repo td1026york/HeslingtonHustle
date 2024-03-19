@@ -53,6 +53,10 @@ public class HeslingtonHustle extends ApplicationAdapter implements Screen, Inpu
 		System.out.println(tiledMapRenderer.getViewBounds());
 	}
 
+	/**
+	 * Sets the character to the one selected
+	 * @param charSelected determines which character will be displayed
+	 */
 	public void setCharacter(int charSelected){
 		this.charSelected = charSelected;
 		System.out.println("Character " + (this.charSelected + 1) + " selected");
