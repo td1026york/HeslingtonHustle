@@ -17,6 +17,13 @@ public class Animator implements ApplicationListener {
     Texture charSheet;
     float stateTime;
 
+    int[]character;
+
+    public Animator(int[] character){
+        this.character = character;
+
+    }
+
     @Override
     public void create() {
 
@@ -26,7 +33,7 @@ public class Animator implements ApplicationListener {
                                 charSheet.getWidth() / 2,
                                 charSheet.getHeight() / 2);
         // get character type
-        Texture tmp1 = tmp[0][0].getTexture();
+        Texture tmp1 = tmp[character[0]][character[1]].getTexture();
         TextureRegion[][] tmp2 = TextureRegion.split(tmp1,
                                 tmp1.getWidth() / 4,
                                 tmp1.getHeight() / 4);
@@ -58,6 +65,13 @@ public class Animator implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(currentFrame, 50, 50);
         spriteBatch.end();
+    }
+
+    public TextureRegion getFrame(float delta){
+        stateTime += Gdx.graphics.getDeltaTime();
+        return walkAnimation.getKeyFrame(stateTime, true);
+
+
     }
 
     @Override

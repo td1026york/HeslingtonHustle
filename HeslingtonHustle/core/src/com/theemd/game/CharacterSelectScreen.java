@@ -136,9 +136,8 @@ public class CharacterSelectScreen implements Screen {
             // Turns all quadrants white to clear any previous selection, then turns selected quadrant yellow to indicate selection
             if(selection!=-1) {
                 if (confirmation.contains(touchPoint.x, touchPoint.y)) {
-                    HeslingtonHustle playScreen = new HeslingtonHustle(game);
-                    playScreen.setCharacter(selection);
-                    game.setScreen(playScreen);
+
+                    game.setScreen(new PlayScreen(game,selection));
 //                    game.setScreen(new PlayScreen(game,selection));
                     this.dispose();
                 }

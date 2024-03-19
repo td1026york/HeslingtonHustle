@@ -3,6 +3,7 @@ package com.theemd.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -116,6 +117,10 @@ public class Splash extends ScreenAdapter {
         batch.draw(splash,x,y,logoWidth,logoHeight);
         batch.end();
 
+        Music music = Gdx.audio.newMusic(Gdx.files.internal("menuMusic.wav"));
+        music.setVolume(0.5f);
+        music.setLooping(true);
+        music.play();
     }
 
     @Override
