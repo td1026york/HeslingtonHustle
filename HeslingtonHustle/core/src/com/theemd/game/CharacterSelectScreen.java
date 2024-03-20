@@ -45,6 +45,7 @@ public class CharacterSelectScreen implements Screen {
 
     @Override
     public void show() {
+
         touchPoint = new Vector3();
         batch = new SpriteBatch();
         font = new BitmapFont();

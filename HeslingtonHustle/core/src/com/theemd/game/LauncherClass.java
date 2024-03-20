@@ -15,7 +15,7 @@ public class LauncherClass extends Game {
         batch = new SpriteBatch();
         font = new BitmapFont();
         // Creates the first instance of the Main Menu Screen and then displays it.
-
+        Resources.load();
         this.setScreen(new Splash(this));
     }
 

@@ -115,10 +115,8 @@ public class Splash extends ScreenAdapter {
         batch.draw(splash,x,y,logoWidth,logoHeight);
         batch.end();
 
-        Music music = Gdx.audio.newMusic(Gdx.files.internal("menuMusic.wav"));
-        music.setVolume(0.5f);
-        music.setLooping(true);
-        music.play();
+
+        Resources.music.play();
     }
 
     @Override
