@@ -218,7 +218,7 @@ public class PlayScreen extends ScreenAdapter {
             // game finished
         }
 
-        if(time ==0){
+        if(time <=0){
             day ++;
             player.setEnergy(10);
             time = 16;
@@ -235,16 +235,16 @@ public class PlayScreen extends ScreenAdapter {
             }
             if(player.studyDesire()&& player.getEnergy()>=3){
 
-                eatCount++;
-                player.setEnergy(player.getEnergy()-1);
-                time-=2;
+                studyCount++;
+                player.setEnergy(player.getEnergy()-2);
+                time-=3;
                 lastAction = System.currentTimeMillis();
 
             }
-            if(player.eatDesire()&& player.getEnergy()>=1){
+            if(player.playDesire()&& player.getEnergy()>=2){
 
                 eatCount++;
-                player.setEnergy(player.getEnergy()-1);
+                player.setEnergy(player.getEnergy()-2);
                 time-=2;
                 lastAction = System.currentTimeMillis();
 
