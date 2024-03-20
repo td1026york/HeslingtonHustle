@@ -37,7 +37,7 @@ public class PlayScreen extends ScreenAdapter {
     int studyCount = 0;
     int recCount = 0;
     //variable to track the current score of the user
-    int score = 30;
+    int score = 0;
     int day = 0;
     int time = 0;
     long lastAction =0;
@@ -122,7 +122,6 @@ public class PlayScreen extends ScreenAdapter {
         prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
         prompt.setRegion(0,0,109,122);
 
-
     }
 
 
@@ -135,7 +134,7 @@ public class PlayScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         viewport.apply();
-        // renders map based on camera
+
 
         // grabs the different layers as they need to be rendered at different times
         int[] bottomLayers = {
@@ -145,16 +144,16 @@ public class PlayScreen extends ScreenAdapter {
         int[] middleLayers = {tiledMap.getLayers().getIndex("ShortObjects")};
         int[] topLayers = {tiledMap.getLayers().getIndex("TallObjects")};
 
-
+        // renders map based on camera
         tiledMapRenderer.setView(camera);
 
         // render bottom and middle layers
         tiledMapRenderer.render(bottomLayers);
         tiledMapRenderer.render(middleLayers);
+
+
+
         tiledMapRenderer.getBatch().begin();
-
-
-
         // draws player passing how much time has passed since last frame for player movement and animation
         player.draw(tiledMapRenderer.getBatch(),v);
         tiledMapRenderer.getBatch().end();
@@ -239,7 +238,7 @@ public class PlayScreen extends ScreenAdapter {
 
 
 
-        //renderInteractableAreas(); Dont uncomment it crashes
+
 
     }
 
@@ -305,6 +304,10 @@ public class PlayScreen extends ScreenAdapter {
                 }
             }
 
+            if(score>=100){
+                score = 100;
+            }
+
 
         }
 
@@ -336,23 +339,5 @@ public class PlayScreen extends ScreenAdapter {
     public void dispose() {
 
     }
-    //this seems to never be used at present
-    //combine InteractableArea and InteractableLocation
-    private void renderInteractableAreas(){
-        int objectLayerID = 5;
-        TiledMapTileLayer ObjectLayer = (TiledMapTileLayer)tiledMap.getLayers().get(objectLayerID);
-        MapObjects InteractableAreas = ObjectLayer.getObjects();
-
-        for (RectangleMapObject space : InteractableAreas.getByType(RectangleMapObject.class)){
-
-            Rectangle area = space.getRectangle();
-            if (Intersector.overlaps(area, player.getBoundingRectangle())){
-                MapProperties properties = space.getProperties();
-                String name = properties.get("name",String.class);
-                System.out.println(name);
-                InteractableArea interactableArea = new InteractableArea();
-                interactableArea.collidedWithArea(name);
-            }
-        }
-    }
+   
 }
