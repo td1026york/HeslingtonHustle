@@ -296,7 +296,7 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void resize(int i, int i1) {
         viewport.update(i,i1);
-
+       font.getData().setScale(Gdx.graphics.getWidth()/800f,Gdx.graphics.getHeight()/600f);
 
     }
 
