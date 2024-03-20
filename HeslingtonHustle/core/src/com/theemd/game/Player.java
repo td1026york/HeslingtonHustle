@@ -177,7 +177,7 @@ public class Player extends Sprite  implements InputProcessor {
      */
     public boolean sleepDesire(){
         Cell cell = interaction.getCell((int) getX(), (int) getY());
-        return cell !=null && cell.getTile().getProperties().containsKey("play");
+        return cell !=null && cell.getTile().getProperties().containsKey("sleep");
     }
 
     /**

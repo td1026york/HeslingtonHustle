@@ -178,6 +178,7 @@ public class PlayScreen extends ScreenAdapter {
             prompt.draw(tiledMapRenderer.getBatch());
         }
         else if(player.sleepDesire()){
+
             prompt.setTexture(new Texture(Gdx.files.internal("sleep.png")));
             prompt.draw(tiledMapRenderer.getBatch());
         }
