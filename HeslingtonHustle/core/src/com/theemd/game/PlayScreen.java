@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.awt.*;
+
 
 public class PlayScreen extends ScreenAdapter {
 
@@ -37,6 +39,9 @@ public class PlayScreen extends ScreenAdapter {
     int day = 0;
     int time = 0;
     long lastAction =0;
+
+    boolean energy = true;
+    float energyRenderTimer; // for timing how long to change energy to red when they try an action with no energy
 
     float mapWidth = 48, mapHeight = 32;
     float mapScale = 16;// pixels to a tile (square in this case)
@@ -117,6 +122,8 @@ public class PlayScreen extends ScreenAdapter {
         prompt.setSize(1,1);
         prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
         prompt.setRegion(0,0,109,122);
+
+        energyRenderTimer = 0;
 
     }
 
@@ -222,7 +229,19 @@ public class PlayScreen extends ScreenAdapter {
 
         // these are drawn at the top, with the screen seperated into 4 for them
         font.draw(uiBatch, "Predicted Score: " + score ,0, Gdx.graphics.getHeight());
+        // when they try an action with no energy
+        if (!energy) {
+            energyRenderTimer +=v; // increments timer by time since last framew
+            font.setColor(Color.RED); // sets font color to red
+            if (energyRenderTimer>=2f){
+                // after two seconds pass of energy being red
+                font.setColor(Color.BLUE); // sets font back to blue
+                energy = true; // sets this to true so they have to try agaijn for it to turn red again
+                energyRenderTimer =0; // resets timer
+            }
+        }
         font.draw(uiBatch, "Energy: " + player.getEnergy() ,Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight());
+        font.setColor(Color.BLUE);
         font.draw(uiBatch, "Time left Today: " + time ,Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Day: " + day +"/7" ,Gdx.graphics.getWidth()/1.3333f, Gdx.graphics.getHeight());
 
@@ -254,17 +273,17 @@ public class PlayScreen extends ScreenAdapter {
 
         // checks if player wants to do an action(pressing e) and that there have been 5 seconds since their last action
         // last action checker simply so they don't perform a bunch of actions with a single click as this runs every frame
-        if(player.isAction()&& System.currentTimeMillis() - lastAction > 5000){
+        if(player.isAction()&& System.currentTimeMillis() - lastAction > 3000){
 
             if(player.eatDesire()){
                 Activity eatActivity = locations[EAT_LOCATION].getActivity(0);
                 if(eatActivity.checkActivity(player.getEnergy(), time)){
-                    eatCount++;
-                    player.setEnergy(player.getEnergy()-eatActivity.getEnergyCost());
-                    time -= eatActivity.getTimeCost();
-                    score += eatActivity.getScoreImpact();
+                    eatCount++; // adds one to eat count
+                    player.setEnergy(player.getEnergy()-eatActivity.getEnergyCost()); // takes away energy used from player
+                    time -= eatActivity.getTimeCost(); // decrements time by time the activity takes
+                    score += eatActivity.getScoreImpact(); // increments score
 
-                    lastAction = System.currentTimeMillis();
+                    lastAction = System.currentTimeMillis(); // sets their time of last action to current time - next time they can do an action is 3 secs
                 }
             }
 
@@ -278,7 +297,7 @@ public class PlayScreen extends ScreenAdapter {
                     score += studyActivity.getScoreImpact();
 
                     lastAction = System.currentTimeMillis();
-                }
+                }else energy = false;
             }
 
             if(player.playDesire()){
@@ -290,7 +309,7 @@ public class PlayScreen extends ScreenAdapter {
                     score += funActivity.getScoreImpact();
 
                     lastAction = System.currentTimeMillis();
-                }
+                }else energy = false;
             }
 
             if(player.sleepDesire()){
