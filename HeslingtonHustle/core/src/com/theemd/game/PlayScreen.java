@@ -42,9 +42,9 @@ public class PlayScreen extends ScreenAdapter {
     int time = 0;
     long lastAction =0;
 
-    float mapWidth = 40, mapHeight = 30;
-    float mapScale = 32;// pixels to a tile (square in this case)
-    float portWidth = 10, portHeight = 7.5f; // how much map is seen at once (1/4 in this case)
+    float mapWidth = 48, mapHeight = 32;
+    float mapScale = 16;// pixels to a tile (square in this case)
+    float portWidth = 15, portHeight = 12.5f; // how much map is seen at once (1/4 in this case)
 
     BitmapFont font;
     SpriteBatch uiBatch;
@@ -89,14 +89,14 @@ public class PlayScreen extends ScreenAdapter {
         tiledMap = new TmxMapLoader().load("Squaremap/Map.tmx"); // loads map
         tiledMap.getLayers().get("Collision").setOpacity(0); // sets collision layer transparent
         tiledMap.getLayers().get("Interaction").setOpacity(0); // sets interation layer transparent
-        tiledMap.getLayers().get("Map").setOpacity(1); // sets map visible (maybe redundant)
+        //tiledMap.getLayers().get("Map").setOpacity(1); // sets map visible (maybe redundant)
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap,1/mapScale); // sets whole world as wide/tall as map - no need to work in pixels
 
         // spritesheet for character animations - contains four characters. Correct one is selected in player.animate(); - could pass selection here as opposed to constructor
         Texture characters = new Texture(Gdx.files.internal("Characters.png"));
-        player.setSize(.5f,.5f); // set size of character (half a tile of the map in this case);
+        player.setSize(1f,1f); // set size of character (half a tile of the map in this case);
         player.animate(characters); // created animations in player based on the character the user has chosen
-        player.setPosition(20,15f);
+        player.setPosition(20,10f);
         player.setCollision((TiledMapTileLayer) tiledMap.getLayers().get("Collision"));
         player.setInteraction((TiledMapTileLayer) tiledMap.getLayers().get("Interaction"));
         Gdx.input.setInputProcessor(player); // player can now move themselves
@@ -136,14 +136,33 @@ public class PlayScreen extends ScreenAdapter {
 
         viewport.apply();
         // renders map based on camera
+
+        // grabs the different layers as they need to be rendered at different times
+        int[] bottomLayers = {
+                        tiledMap.getLayers().getIndex("Collision"),
+                        tiledMap.getLayers().getIndex("Interaction"),
+                        tiledMap.getLayers().getIndex("Floors")};
+        int[] middleLayers = {tiledMap.getLayers().getIndex("ShortObjects")};
+        int[] topLayers = {tiledMap.getLayers().getIndex("TallObjects")};
+
+
         tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
+
+        // render bottom and middle layers
+        tiledMapRenderer.render(bottomLayers);
+        tiledMapRenderer.render(middleLayers);
         tiledMapRenderer.getBatch().begin();
 
 
 
         // draws player passing how much time has passed since last frame for player movement and animation
         player.draw(tiledMapRenderer.getBatch(),v);
+        tiledMapRenderer.getBatch().end();
+
+        // render remaining layers
+        tiledMapRenderer.render(topLayers);
+
+        tiledMapRenderer.getBatch().begin();
         prompt.setPosition(player.getX()+player.getWidth(), player.getY()+player.getHeight());
 
         if(player.eatDesire()){
@@ -159,9 +178,8 @@ public class PlayScreen extends ScreenAdapter {
             prompt.draw(tiledMapRenderer.getBatch());
         }
 
-
-
         tiledMapRenderer.getBatch().end();
+
 
 
 
