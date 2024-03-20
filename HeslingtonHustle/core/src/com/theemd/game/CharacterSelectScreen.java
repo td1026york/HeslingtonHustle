@@ -11,10 +11,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import sun.tools.jconsole.JConsole;
 
-import java.awt.*;
-
+/**
+ * Screen allowing for selection of the avatar for the game
+ */
 public class CharacterSelectScreen implements Screen {
     LauncherClass game;
     private static final int quadrantCount = 4; // for the four character options

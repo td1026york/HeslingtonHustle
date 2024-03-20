@@ -4,6 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
+/**
+ * Stores information about an activity that may be performed by the player
+ */
 public class Activity {
     private int energyCost;
     private int scoreImpact;
@@ -16,7 +19,7 @@ public class Activity {
      * @param s the impact on the score of the Activity (positive or negative)
      * @param t the time cost of the Activity in hours
      * @param n the name of the Activity
-     * @return the new Activity instance created
+     * @return new Activity instance created
      */
     public Activity(int e, int s, int t, String n){
         energyCost = e;
@@ -34,31 +37,29 @@ public class Activity {
         return (charEnergy >= energyCost && hoursLeft >= timeCost);
     }
 
+    /** Returns the energy cost of the Activity
+     * @return int energyCost
+     */
     public int getEnergyCost(){
-        /** Returns the energy cost of the Activity
-         * @return int energyCost
-         */
         return energyCost;
     }
-
+    /** Returns the score impact of the Activity
+     * @return int scoreImpact
+     */
     public int getScoreImpact(){
-        /** Returns the score impact of the Activity
-         * @return int scoreImpact
-         */
         return scoreImpact;
     }
-
+    /** Returns the time cost of the Activity in hours
+     * @return int timeCost
+     */
     public int getTimeCost(){
-        /** Returns the time cost of the Activity in hours
-         * @return int timeCost
-         */
         return timeCost;
     }
 
+    /** Returns the name of the Activity
+     * @return String name
+     */
     public String getName(){
-        /** Returns the name of the Activity
-         * @return String name
-         */
         return name;
     }
 

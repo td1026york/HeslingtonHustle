@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+/** Screen used to display the start menu of the game after logo fades away
+ */
 public class MainMenuScreen implements Screen {
 
     final LauncherClass game;
@@ -24,8 +26,12 @@ public class MainMenuScreen implements Screen {
     private TextureRegion whiteTextureRegion; // filler texture to draw quadrants
     BitmapFont font;
 
-    public MainMenuScreen(final LauncherClass gam) {
-        game = gam;
+    /**
+     * Creates and returns an instance of the MainMenuScreen
+     * @param game the final LauncherClass used throughout the game
+     */
+    public MainMenuScreen(final LauncherClass game) {
+        this.game = game;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
