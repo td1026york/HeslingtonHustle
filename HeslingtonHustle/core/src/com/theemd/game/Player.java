@@ -195,7 +195,7 @@ public class Player extends Sprite  implements InputProcessor {
                 animationTime = 0;
                 break;
             case Keys.E:
-                action = true;
+                action = false;
 
         }
         return true;

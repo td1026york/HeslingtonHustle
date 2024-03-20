@@ -40,7 +40,7 @@ public class PlayScreen extends ScreenAdapter {
     //variable to track the current score of the user
     int score = 30;
     int day = 0;
-    int time = 16;
+    int time = 0;
     long lastAction =0;
 
     float mapWidth = 40, mapHeight = 30;
@@ -102,7 +102,7 @@ public class PlayScreen extends ScreenAdapter {
         camera.update(); // updates camera start to initial setup
 
 
-
+        lastAction = System.currentTimeMillis()-5000;
         uiMatrix = camera.combined.cpy();
 
         uiBatch = new SpriteBatch();
@@ -121,6 +121,7 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void render(float v) {
+        game();
         // clear screen to render next frame
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -197,7 +198,7 @@ public class PlayScreen extends ScreenAdapter {
         font.draw(uiBatch, "Sleep Count: " + sleepCount ,0, 15);
         font.draw(uiBatch, "Study Count: " + studyCount ,Gdx.graphics.getWidth()/4f, 15);
         font.draw(uiBatch, "Recreation Count: " + recCount ,Gdx.graphics.getWidth()/2f, 15);
-        font.draw(uiBatch, "Eat Count" + eatCount ,Gdx.graphics.getWidth()/1.3333f, 15);
+        font.draw(uiBatch, "Eat Count: " + eatCount ,Gdx.graphics.getWidth()/1.3333f, 15);
 
 
 
@@ -223,8 +224,38 @@ public class PlayScreen extends ScreenAdapter {
             time = 16;
         }
 
+        if(player.isAction()&& System.currentTimeMillis() - lastAction > 5000){
+            if(player.eatDesire()&& player.getEnergy()>=1){
 
-        lastAction = System.currentTimeMillis();
+                eatCount++;
+                player.setEnergy(player.getEnergy()-1);
+                time-=2;
+                lastAction = System.currentTimeMillis();
+
+            }
+            if(player.studyDesire()&& player.getEnergy()>=3){
+
+                eatCount++;
+                player.setEnergy(player.getEnergy()-1);
+                time-=2;
+                lastAction = System.currentTimeMillis();
+
+            }
+            if(player.eatDesire()&& player.getEnergy()>=1){
+
+                eatCount++;
+                player.setEnergy(player.getEnergy()-1);
+                time-=2;
+                lastAction = System.currentTimeMillis();
+
+            }
+
+
+
+        }
+
+
+
 
 
     }
