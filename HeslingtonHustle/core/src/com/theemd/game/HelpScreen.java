@@ -52,7 +52,7 @@ public class HelpScreen implements Screen{
         game.font.draw(game.batch, "* Activities consume time and cost energy to do, so manage both resources carefully!", 20, 280);
         game.font.draw(game.batch, "* The aim of the game is to get as high of a score on your exam as possible!", 20, 260);
         game.font.draw(game.batch, "* You have 7 days, each day has 16 hours: have fun!", 20, 240);
-        game.font.draw(game.batch, "* The game can be muted by pressing [ ] or by pressing the mute button on the interface", 20, 70);
+        game.font.draw(game.batch, "* The game can be muted by pressing M", 20, 70);
         game.font.draw(game.batch, "* Press ESCAPE to return to the main menu", 20, 50);
         game.batch.end();
 
