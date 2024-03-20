@@ -3,7 +3,7 @@
  <properties>
   <property name="play" value="play"/>
  </properties>
- <image source="play.png" width="16" height="16"/>
+ <image source="activities/play.png" width="16" height="16"/>
  <tile id="0">
   <properties>
    <property name="play" value="play"/>

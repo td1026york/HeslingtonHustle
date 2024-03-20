@@ -3,7 +3,7 @@
  <properties>
   <property name="sleep" value="sleep"/>
  </properties>
- <image source="sleep.png" width="16" height="16"/>
+ <image source="activities/sleep.png" width="16" height="16"/>
  <tile id="0">
   <properties>
    <property name="sleep" value="sleep"/>
