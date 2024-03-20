@@ -226,10 +226,10 @@ public class PlayScreen extends ScreenAdapter {
         font.draw(uiBatch, "Time left Today: " + time ,Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Day: " + day +"/7" ,Gdx.graphics.getWidth()/1.3333f, Gdx.graphics.getHeight());
 
-        font.draw(uiBatch, "Sleep Count: " + sleepCount ,0, 15);
-        font.draw(uiBatch, "Study Count: " + studyCount ,Gdx.graphics.getWidth()/4f, 15);
-        font.draw(uiBatch, "Recreation Count: " + recCount ,Gdx.graphics.getWidth()/2f, 15);
-        font.draw(uiBatch, "Eat Count: " + eatCount ,Gdx.graphics.getWidth()/1.3333f, 15);
+        font.draw(uiBatch, "Sleep Count: " + sleepCount ,0, 15*(Gdx.graphics.getHeight()/600f));
+        font.draw(uiBatch, "Study Count: " + studyCount ,Gdx.graphics.getWidth()/4f, 15*(Gdx.graphics.getHeight()/600f));
+        font.draw(uiBatch, "Recreation Count: " + recCount ,Gdx.graphics.getWidth()/2f, 15*(Gdx.graphics.getHeight()/600f));
+        font.draw(uiBatch, "Eat Count: " + eatCount ,Gdx.graphics.getWidth()/1.3333f, 15*(Gdx.graphics.getHeight()/600f) );
 
 
 
@@ -312,7 +312,7 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void resize(int i, int i1) {
         viewport.update(i,i1);
-
+        font.getData().setScale(Gdx.graphics.getWidth()/800f,Gdx.graphics.getHeight()/600f);
 
     }
 
