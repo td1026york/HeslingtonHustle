@@ -37,7 +37,7 @@ public class PlayScreen extends ScreenAdapter {
     int studyCount = 0;
     int recCount = 0;
     //variable to track the current score of the user
-    int score = 30;
+    int score = 0;
     int day = 0;
     int time = 0;
     long lastAction =0;
@@ -121,7 +121,6 @@ public class PlayScreen extends ScreenAdapter {
         prompt.setSize(1,1);
         prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
         prompt.setRegion(0,0,109,122);
-
 
     }
 
@@ -303,6 +302,10 @@ public class PlayScreen extends ScreenAdapter {
 
                     lastAction = System.currentTimeMillis();
                 }
+            }
+
+            if(score>=100){
+                score = 100;
             }
 
 
