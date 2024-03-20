@@ -247,50 +247,63 @@ public class Player extends Sprite  implements InputProcessor {
         return true;
     }
 
+    //Returns whether player is pressing e and want to do an action
     public boolean isAction() {
         return action;
     }
 
+
+    // Creates all 5 animations for player
     public void animate(Texture temp){
 
-        TextureRegion help = new TextureRegion(temp,xOffsett,yOffset,64,64);
+        // AS mentioned pervious, character png is split into 4 quadrants 64x64 pixels wide and tall
+        // This chooses the quadrant and places it into a new textureRegion
+        TextureRegion characterSkin = new TextureRegion(temp,xOffsett,yOffset,64,64);
 
 
 
 
 
-
+        // stores each row of the quadrant of animation
+        // Added a fifth row to handle flipping of sideways animation - Charcter png only has one version(left or right) so have to flip for both directions
         TextureRegion[] walkFrames = new TextureRegion[4 * 5];
 
+
+        // Creating left and right walking animations
         for (int j=0; j < 4; j++){
             if(character%2==0){
-                walkFrames[j] =  new TextureRegion(help,j*16+16,0,-16 ,16);
-                walkFrames[j+4] =  new TextureRegion(help,j*16,0, 16,16);
+                // the characters in the left quadrants only have left walking animation
+                // So to create the right walking animation they are drawn here with a negative width to flip the image
+                // have to increment the position by the width of frame as the "square" region they draw starts from the right of the frame instead of the left
+                walkFrames[j] =  new TextureRegion(characterSkin,j*16+16,0,-16 ,16);
+                walkFrames[j+4] =  new TextureRegion(characterSkin,j*16,0, 16,16);
             }else{
-                walkFrames[j] =  new TextureRegion(help,j*16,0,16,16);
-                walkFrames[j+4] =  new TextureRegion(help,j*16+16,0, -16 ,16);
+                // opposite is true for characters in the right quadrants, so you just do the opposite
+                walkFrames[j] =  new TextureRegion(characterSkin,j*16,0,16,16);
+                walkFrames[j+4] =  new TextureRegion(characterSkin,j*16+16,0, -16 ,16);
             }
 
         }
 
-
+        // first two rows are filled with right and left animations so start index at 8
         int index = 8;
         for (int i=1; i < 4; i++){
             for (int j=0; j < 4; j++){
 
-                walkFrames[index++] =  new TextureRegion(help,j*16,i*16,16,16);
+                walkFrames[index++] =  new TextureRegion(characterSkin,j*16,i*16,16,16);
             }
         }
 
 
-        help.flip(true,false);
+        characterSkin.flip(true,false);
 
 
-
+        // fills animations with their respective frames
         rightWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 0, 3));
         leftWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 4, 7));
         upWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 8, 11));
         downWalking= new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 12, 15));
+        // still is only three frames as charcter png has random empty fram in bottom right of all quadrants - dont want character just ceasing to exist every fourth still frame
         still = new Animation<TextureRegion> (0.25f, Arrays.copyOfRange(walkFrames, 16, 19));
 
     }

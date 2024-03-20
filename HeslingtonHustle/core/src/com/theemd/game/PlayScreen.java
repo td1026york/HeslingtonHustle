@@ -124,6 +124,7 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void render(float v) {
+        // runs the game function for user interaction. A tick rate of 60 probably. Better than the terrible fortnite servers
         game();
         // clear screen to render next frame
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -157,9 +158,14 @@ public class PlayScreen extends ScreenAdapter {
         // render remaining layers
         tiledMapRenderer.render(topLayers);
 
-        tiledMapRenderer.getBatch().begin();
-        prompt.setPosition(player.getX()+player.getWidth(), player.getY()+player.getHeight());
 
+        // for drawing moving sprites
+        tiledMapRenderer.getBatch().begin();
+        // prompt  for telling user to interact with building when they get close
+        // set directly next to the top right of the player character
+        prompt.setPosition(player.getX()+player.getWidth(), player.getY()+player.getHeight());
+        // sets the texture of the prompt depending on which interactable location the player is currently near
+        // the prompt is only drawn when a player is near a location
         if(player.eatDesire()){
             prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
             prompt.draw(tiledMapRenderer.getBatch());
@@ -196,62 +202,61 @@ public class PlayScreen extends ScreenAdapter {
         viewport.apply();
         if(x){
             camera.position.set(player.getX() + player.getWidth() / 2, camera.position.y, 0);
-
-
         }
         if(y) {
             camera.position.set(camera.position.x, player.getY() + player.getHeight() / 2, 0);
-
-
         }
 
         camera.update(); // updated camera - changes position if above was true
 
 
 
-
+        // sets the transformation matrix for drawing the ui simply to the pixel height and width of the screen
         uiMatrix.setToOrtho2D(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         uiBatch.setProjectionMatrix(uiMatrix);
 
+        // drawing the ui with seperate batch
+        // needed to be done as text doesn't scale well at the scale the game viewpoint is using
         uiBatch.begin();
 
 
-
+        // these are drawn at the top, with the screen seperated into 4 for them
         font.draw(uiBatch, "Predicted Score: " + score ,0, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Energy: " + player.getEnergy() ,Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Time left Today: " + time ,Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Day: " + day +"/7" ,Gdx.graphics.getWidth()/1.3333f, Gdx.graphics.getHeight());
+
+
+        // these are drawn at the bottom
+        // they are drawn 15 pixels above the bottom with a screen size of 800x600.
+        // they need to be drawn higher with higher screen res so they don't draw offscreen as the font size scales with screen size (in the resize function)
 
         font.draw(uiBatch, "Sleep Count: " + sleepCount ,0, 15*(Gdx.graphics.getHeight()/600f));
         font.draw(uiBatch, "Study Count: " + studyCount ,Gdx.graphics.getWidth()/4f, 15*(Gdx.graphics.getHeight()/600f));
         font.draw(uiBatch, "Recreation Count: " + recCount ,Gdx.graphics.getWidth()/2f, 15*(Gdx.graphics.getHeight()/600f));
         font.draw(uiBatch, "Eat Count: " + eatCount ,Gdx.graphics.getWidth()/1.3333f, 15*(Gdx.graphics.getHeight()/600f) );
 
-
-
-
         uiBatch.end();
-
-
-
-
-
     }
 
-
+    // runs the actual character interaction with the map and their stats
     public void game(){
+        // ends game after 7 days
         if(day==8){
             game.setScreen(new ScoreScreen(game, score));
         }
-
+        // goes to new day once the 16 hours are up
         if(time <=0){
             day ++;
             player.setEnergy(10);
             time = 16;
         }
 
+        // checks if player wants to do an action(pressing e) and that there have been 5 seconds since their last action
+        // last action checker simply so they don't perform a bunch of actions with a single click as this runs every frame
         if(player.isAction()&& System.currentTimeMillis() - lastAction > 5000){
-            if(player.eatDesire()&& player.getEnergy()>=1){
+
+            if(player.eatDesire()){
                 Activity eatActivity = locations[EAT_LOCATION].getActivity(0);
                 if(eatActivity.checkActivity(player.getEnergy(), time)){
                     eatCount++;
@@ -263,7 +268,7 @@ public class PlayScreen extends ScreenAdapter {
                 }
             }
 
-            if(player.studyDesire()&& player.getEnergy()>=3){
+            if(player.studyDesire()){
                 Activity studyActivity = locations[STUDY_LOCATION].getActivity(0);
                 if(studyActivity.checkActivity(player.getEnergy(), time)){
                     studyCount++;
@@ -276,7 +281,7 @@ public class PlayScreen extends ScreenAdapter {
                 }
             }
 
-            if(player.playDesire()&& player.getEnergy()>=2){
+            if(player.playDesire()){
                 Activity funActivity = locations[RECREATION_LOCATION].getActivity(0);
                 if(funActivity.checkActivity(player.getEnergy(), time)){
                     recCount++;
@@ -311,7 +316,9 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void resize(int i, int i1) {
+        // updates viewpoint scaling when screen resolution is changed
         viewport.update(i,i1);
+        // font size is scaled with screen size (with a scale of 1 based on window 800x600)
         font.getData().setScale(Gdx.graphics.getWidth()/800f,Gdx.graphics.getHeight()/600f);
 
     }
