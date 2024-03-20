@@ -177,6 +177,10 @@ public class PlayScreen extends ScreenAdapter {
             prompt.setTexture(new Texture(Gdx.files.internal("study.png")));
             prompt.draw(tiledMapRenderer.getBatch());
         }
+        else if(player.sleepDesire()){
+            prompt.setTexture(new Texture(Gdx.files.internal("sleep.png")));
+            prompt.draw(tiledMapRenderer.getBatch());
+        }
 
         tiledMapRenderer.getBatch().end();
 
@@ -283,6 +287,18 @@ public class PlayScreen extends ScreenAdapter {
                     player.setEnergy(player.getEnergy()-funActivity.getEnergyCost());
                     time -= funActivity.getTimeCost();
                     score += funActivity.getScoreImpact();
+
+                    lastAction = System.currentTimeMillis();
+                }
+            }
+
+            if(player.sleepDesire()){
+                Activity sleepActivity = locations[SLEEP_LOCATION].getActivity(0);
+                if(sleepActivity.checkActivity(100, 100)){ //large numbers to allow player to sleep whenever
+                    sleepCount++;
+                    player.setEnergy(player.getEnergy()-sleepActivity.getEnergyCost());
+                    time -= sleepActivity.getTimeCost();
+                    score += sleepActivity.getScoreImpact();
 
                     lastAction = System.currentTimeMillis();
                 }
