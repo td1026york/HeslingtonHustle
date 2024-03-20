@@ -85,7 +85,7 @@ public class PlayScreen extends ScreenAdapter {
         Texture characters = new Texture(Gdx.files.internal("Characters.png"));
         player.setSize(.5f,.5f); // set size of character (half a tile of the map in this case);
         player.animate(characters); // created animations in player based on the character the user has chosen
-        player.setPosition(20,15f);
+        player.setPosition(20,10f);
         player.setCollision((TiledMapTileLayer) tiledMap.getLayers().get("Collision"));
         player.setInteraction((TiledMapTileLayer) tiledMap.getLayers().get("Interaction"));
         Gdx.input.setInputProcessor(player); // player can now move themselves
