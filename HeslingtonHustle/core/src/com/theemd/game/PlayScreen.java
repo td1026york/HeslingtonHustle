@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -32,7 +34,7 @@ public class PlayScreen extends ScreenAdapter {
     private String characterSelect;
     Player player;
     TiledMap tiledMap;
-    HexagonalTiledMapRenderer tiledMapRenderer;
+    OrthogonalTiledMapRenderer tiledMapRenderer;
     OrthographicCamera camera;
     Viewport viewport;
     LauncherClass game;
@@ -43,7 +45,17 @@ public class PlayScreen extends ScreenAdapter {
     int recCount = 0;
     //variable to track the current score of the user
     int score = 30;
-    private static final float ZOOM_SPEED = 0.1f;
+
+
+    float mapWidth = 40, mapHeight = 30;
+    float mapScale = 32;// pixels to a tile (square in this case)
+    float portWidth = 10, portHeight = 7.5f; // how much map is seen at once (1/4 in this case)
+
+
+
+
+
+
 
     /**
      * Creates an instance of PlayScreen and returns it
@@ -53,80 +65,82 @@ public class PlayScreen extends ScreenAdapter {
     public PlayScreen(LauncherClass game, int selection){
         this.game = game;
         characterSelect = Integer.toString(selection);
-        player = new Player(selection);
+        // selection for which character from previous screen : collision for character collision detection - set in show method as map is not yet loaded
+        player = new Player(selection,null);
 
 
     }
 
     @Override
     public void show() {
+        tiledMap = new TmxMapLoader().load("Squaremap/Map.tmx"); // loads map
+        tiledMap.getLayers().get("Collision").setOpacity(0); // sets collision layer transparent
+        tiledMap.getLayers().get("Interaction").setOpacity(0); // sets interation layer transparent
+        tiledMap.getLayers().get("Map").setOpacity(1); // sets map visible (maybe redundant)
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap,1/mapScale); // sets whole world as wide/tall as map - no need to work in pixels
 
-        Texture test = new Texture(Gdx.files.internal("Characters.png"));
-        player.setSize(.5f,.5f);
-        player.setTexture(test);
-        player.setPosition(10,7.5f);
+
+
+        // spritesheet for character animations - contains four characters. Correct one is selected in player.animate(); - could pass selection here as opposed to constructor
+        Texture characters = new Texture(Gdx.files.internal("Characters.png"));
+        player.setSize(.5f,.5f); // set size of character (half a tile of the map in this case);
+        player.animate(characters); // created animations in player based on the character the user has chosen
+        player.setPosition(20,15f);
+        player.setCollision((TiledMapTileLayer) tiledMap.getLayers().get("Collision"));
+        Gdx.input.setInputProcessor(player); // player can now move themselves
 
 
 
-        tiledMap = new TmxMapLoader().load("mainMap.tmx");
-        tiledMapRenderer = new HexagonalTiledMapRenderer(tiledMap,1/120f);
-        int x = tiledMap.getProperties().get("width",Integer.class) * tiledMap.getProperties().get("tilewidth",Integer.class);
-        int y = tiledMap.getProperties().get("height",Integer.class) * tiledMap.getProperties().get("tileheight",Integer.class);
+
+        // created camera and viewport  - viewport as large as portWidth/Height
         camera = new OrthographicCamera( );
-        viewport = new FitViewport(5 ,5,camera);
+        viewport = new FitViewport(10,7.5f,camera);
         viewport.apply();
+        camera.update(); // updates camera start to initial setup
 
-        // camera.position.set(0.75f,  1f,0);
-        // camera.zoom = 0.5f;
-        camera.update();
-        // sets up camera
-        player.animate(test);
-        Gdx.input.setInputProcessor(player);
+
+
 
     }
 
-   /* private void handleInput() {
-        // Zoom in with the up arrow key
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            camera.zoom -= ZOOM_SPEED;
-        }
-        // Zoom out with the down arrow key
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            camera.zoom += ZOOM_SPEED;
-        }
-    }
-*/
+
 
     @Override
     public void render(float v) {
-
+        // clear screen to render next frame
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-
+        // renders map based on camera
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
-
         tiledMapRenderer.getBatch().begin();
 
 
 
-
+        // draws player passing how much time has passed since last frame for player movement and animation
         player.draw(tiledMapRenderer.getBatch(),v);
-
-        Vector2 max = new Vector2(20,15);
-
         tiledMapRenderer.getBatch().end();
-        if(player.getX()<=18 && player.getX()>=2 ) {
+
+
+        /* - ensured camera stays within bound of map when player gets close to the edge
+        // - checks if player(who is centred within camera), is within half the view width from the edge (meaning any further and the camera would be off the map)
+        // - adds player width to right moving check (as x is increasing) as player is rendered from the bottom right
+             (so player position starts there) in order to remove black bar when camera moves a player width too fat
+            - X and Y are checked seperately so camera follows player if they are in top or bottom of map moving left
+              or up and down if they are in edges of map
+        */
+        boolean x = player.getX() + portWidth/2 + player.getWidth() <= mapWidth && player.getX() - portWidth/2 > 0;
+        boolean y = player.getY()+portHeight/2 +player.getWidth() < mapHeight && player.getY() - portHeight/2 >0; // same as above for y im not typing that out again
+        if(x){
             camera.position.set(player.getX() + player.getWidth() / 2, camera.position.y, 0);
         }
-        if(player.getY()>=2 && player.getY()<=11) {
+        if(y) {
             camera.position.set(camera.position.x, player.getY() + player.getHeight() / 2, 0);
         }
-        //System.out.println(player.getX());
-        //System.out.println(player.getY());
-        camera.update();
+
+        camera.update(); // updated camera - changes position if above was true
         //renderInteractableAreas(); Dont uncomment it crashes
 
     }

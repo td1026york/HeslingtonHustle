@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 import java.util.Arrays;
 
@@ -18,22 +21,30 @@ public class Player extends Sprite  implements InputProcessor {
     final int cDimensions = 16; // each seperate image of a character is 16x16 pixels
     final float speed= 5f;
     private Vector2 velocity = new Vector2(); // for player movement
-    private float animationTime;
+    private float animationTime; // for timing walking animation
 
+    private TiledMapTileLayer collision;
+
+    int energy; // for keeping track of player energy day to day.
+
+
+    // self-explanatory icl
     Animation<TextureRegion>  upWalking;
     Animation<TextureRegion> downWalking;
     Animation<TextureRegion>  rightWalking;
     Animation<TextureRegion>  leftWalking;
-
     Animation<TextureRegion> still;
 
 
-    public Player(int character) {
-        this.character = character;
+    public Player(int character, TiledMapTileLayer Collision) {
+        this.collision = Collision; // gets collision tilemap for collision detection
+        this.character = character; // user character choice
         velocity.x = 0;
         velocity.y = 0;
 
-
+        // in character sheet character animations are seperated into a quadrant for each character - selects correct quadrant.
+        // used an offset of 64 as each frame of an animation is 16 pixels wide and tall, 4 frames in an animation and 4 animations per character
+        // creating a 64 by 64 pixel grid for all four of the characters
         switch (character) {
             case 0:
                 yOffset = 64;
@@ -64,8 +75,12 @@ public class Player extends Sprite  implements InputProcessor {
         }
 
     }
+    // setter for collision map
+    public void setCollision(TiledMapTileLayer collision) {
+        this.collision = collision;
+    }
 
-
+    // draws sprite - overridden to take in time for update() which calculted character movement and animation
     @Override
     public void draw(Batch batch,float delta) {
 
@@ -75,16 +90,26 @@ public class Player extends Sprite  implements InputProcessor {
     }
     public void update(float delta){
 
-        if (getY()>=13 && velocity.y>0){velocity.y=0;}
-        if (getX()<=0.4 && velocity.x<0){velocity.x=0;}
-        if (getY()<=0.3 && velocity.y<0){velocity.y=0;}
-        if (getX()>=19.5 && velocity.x>0){velocity.x=0;} // prevents character from walking off screen
+        // gets the coordinates of the cell the character is about to move into
+        // math.floor may be redundant
+        int newX = (int) Math.floor(getX() + velocity.x * delta);
+        int newY = (int) Math.floor((getY() + velocity.y * delta));
 
+        // gets the cell based on coords
+        Cell cell = collision.getCell(newX,newY);
+        // if the cell isn't empty, checks if the cell is blocked, if it is, player position is not updated
+        if (cell !=null && !cell.getTile().getProperties().containsKey("blocked") ){
+            setX(getX() + velocity.x * delta);
+            setY(getY() + velocity.y * delta);
+        }
 
-        setX(getX() + velocity.x * delta);
-        setY(getY() + velocity.y * delta);
+        // animation time for tracking which frame in the animaiton a character should be in -
+        // resets to zero every time they change direction or stop moving in order to start next animation from the beginning
         animationTime += delta;
 
+
+        // sets the character model based on which frame their animation currentlly is based on animationTime
+        // as well as which animation they are in based on their velocity
         setRegion(velocity.y < 0 ? downWalking.getKeyFrame(animationTime,true) : velocity.y > 0 ? upWalking.getKeyFrame(animationTime,true):
                  velocity.x < 0 ? leftWalking.getKeyFrame(animationTime,true) : velocity.x > 0 ? rightWalking.getKeyFrame(animationTime,true):
                          still.getKeyFrame(animationTime,true));

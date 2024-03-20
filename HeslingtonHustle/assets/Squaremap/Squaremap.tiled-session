@@ -5,9 +5,25 @@
     },
     "activeFile": "",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "Kenny.tsx": {
+            "scaleInDock": 1
+        },
+        "Map.tmx": {
+            "scale": 0.7065625,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 641.1322423706325,
+                "y": 479.0800530738611
+            }
+        },
+        "roguelikeCity_magenta.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 1
+        }
     },
     "last.imagePath": "C:/Users/ereif/Documents/Squaremap/Roguelike Modern City pack/Spritesheet",
     "map.height": 30,
@@ -17,6 +33,12 @@
     ],
     "project": "Squaremap.tiled-project",
     "recentFiles": [
+        "roguelikeCity_magenta.tsx",
+        "Map.tmx"
     ],
-    "tileset.lastUsedFormat": "tsx"
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
 }
