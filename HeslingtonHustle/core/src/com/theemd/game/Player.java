@@ -15,6 +15,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 import java.util.Arrays;
 
+/**
+ * Player class containing the information relating to the player throughout the game
+ */
 public class Player extends Sprite  implements InputProcessor {
     int character; // the skin the player chooses
     final int yOffset, xOffsett; // For choosing the quadrant of character a player has chosen walking animations
@@ -39,13 +42,17 @@ public class Player extends Sprite  implements InputProcessor {
     Animation<TextureRegion> still;
 
 
+    /**
+     * Creates and returns an instance of the Player, selecting the character sprite to be displayed.
+     * @param character an integer used to determine which character
+     */
     public Player(int character) {
 
         this.character = character; // user character choice
         velocity.x = 0;
         velocity.y = 0;
 
-        // in character sheet character animations are seperated into a quadrant for each character - selects correct quadrant.
+        // In character sheet character animations are separated into a quadrant for each character - selects correct quadrant.
         // used an offset of 64 as each frame of an animation is 16 pixels wide and tall, 4 frames in an animation and 4 animations per character
         // creating a 64 by 64 pixel grid for all four of the characters
         switch (character) {
@@ -60,10 +67,10 @@ public class Player extends Sprite  implements InputProcessor {
 
                 break;
 
+            //this case duplicates the default branch, is it redundant?
             case 2:
                 yOffset = 0;
                 xOffsett = 0;
-
                 break;
 
             case 3:
@@ -78,16 +85,24 @@ public class Player extends Sprite  implements InputProcessor {
         }
 
     }
-    // setter for collision map
+
+    /**
+     * Sets Player's collision attribute to the parameter passed
+     * @param collision the TiledMapTileLayer to be assigned to the Player as collision
+     */
     public void setCollision(TiledMapTileLayer collision) {
         this.collision = collision;
     }
 
+    /**
+     * Sets Player's interaction attribute to the parameter passed
+     * @param interaction the TiledMapTileLayer to be assigned to the Player as interaction
+     */
     public void setInteraction(TiledMapTileLayer interaction) {
         this.interaction = interaction;
     }
 
-    // draws sprite - overridden to take in time for update() which calculted character movement and animation
+    // draws sprite - overridden to take in time for update() which calculated character movement and animation
     @Override
     public void draw(Batch batch,float delta) {
 
@@ -125,6 +140,10 @@ public class Player extends Sprite  implements InputProcessor {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean eatDesire(){
         Cell cell = interaction.getCell((int) getX(), (int) getY());
         return (cell !=null && cell.getTile().getProperties().containsKey("eat")) ;
@@ -132,23 +151,46 @@ public class Player extends Sprite  implements InputProcessor {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean studyDesire(){
         Cell cell = interaction.getCell((int) getX(), (int) getY());
         return  (cell !=null && cell.getTile().getProperties().containsKey("study")) ;
 
 
     }
+
+    /**
+     *
+     * @return
+     */
     public boolean playDesire(){
         Cell cell = interaction.getCell((int) getX(), (int) getY());
         return cell !=null && cell.getTile().getProperties().containsKey("play");
-
-
     }
 
+    /**
+     *
+     * @return
+     */
+    public boolean sleepDesire(){
+        Cell cell = interaction.getCell((int) getX(), (int) getY());
+        return cell !=null && cell.getTile().getProperties().containsKey("play");
+    }
+
+    /**
+     * Returns the player's energy
+     */
     public int getEnergy() {
         return energy;
     }
 
+    /**
+     * Sets the Player's energy to the value passed
+     * @param energy the new energy value for the Player
+     */
     public void setEnergy(int energy) {
         this.energy = energy;
     }

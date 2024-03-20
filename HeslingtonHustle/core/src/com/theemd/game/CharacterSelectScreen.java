@@ -34,6 +34,10 @@ public class CharacterSelectScreen implements Screen {
 
     Texture characters[];
 
+    /**
+     * Creates and returns a new instance of the character select screen
+     * @param game the final LauncherClass
+     */
     public CharacterSelectScreen(LauncherClass game){
 
         this.game = game;
@@ -78,10 +82,6 @@ public class CharacterSelectScreen implements Screen {
             quadrants[i] = new Rectangle();
             quadrantColors[i] = Color.WHITE;
         }
-
-
-
-        // Calculate quadrant size and positions
 
         //size - Leaves 50 units top and bottom for confirmation button and prompt for user
         float quadrantWidth = (viewport.getWorldWidth() )/ 2f;

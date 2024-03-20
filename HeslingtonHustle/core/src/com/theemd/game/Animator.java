@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.w3c.dom.Text;
 
+/**
+ *This is never used, delete maybe?
+ */
 public class Animator implements ApplicationListener {
 
     SpriteBatch spriteBatch;

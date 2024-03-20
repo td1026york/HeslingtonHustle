@@ -14,7 +14,7 @@ public class HelpScreen implements Screen{
     private OrthographicCamera camera;
 
     /**
-     * Creates amd returns an instance of the HelpScreen
+     * Creates and returns an instance of the HelpScreen
      * @param game the final LauncherClass used throughout the game
      */
     public HelpScreen(final LauncherClass game) {
@@ -23,6 +23,7 @@ public class HelpScreen implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
     }
+
     @Override
     public void show() {
 

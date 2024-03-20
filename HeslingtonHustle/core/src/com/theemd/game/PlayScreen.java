@@ -301,7 +301,8 @@ public class PlayScreen extends ScreenAdapter {
     public void dispose() {
 
     }
-
+    //this seems to never be used at present
+    //combine InteractableArea and InteractableLocation
     private void renderInteractableAreas(){
         int objectLayerID = 5;
         TiledMapTileLayer ObjectLayer = (TiledMapTileLayer)tiledMap.getLayers().get(objectLayerID);
@@ -316,7 +317,6 @@ public class PlayScreen extends ScreenAdapter {
                 System.out.println(name);
                 InteractableArea interactableArea = new InteractableArea();
                 interactableArea.collidedWithArea(name);
-
             }
         }
     }

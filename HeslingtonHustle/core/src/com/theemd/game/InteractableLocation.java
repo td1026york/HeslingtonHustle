@@ -4,6 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
+/**
+ * Location containing a list of activities available at a specific location.
+ */
 public class InteractableLocation {
     ArrayList<Activity> activityList;
     Vector2 myLocation;

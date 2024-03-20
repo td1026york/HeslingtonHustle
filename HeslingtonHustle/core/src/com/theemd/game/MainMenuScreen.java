@@ -12,10 +12,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-/** Screen used to display the start menu of the game after logo fades away
+/**
+ * Screen used to display the start menu of the game after logo fades away
  */
 public class MainMenuScreen implements Screen {
-
     final LauncherClass game;
     private OrthographicCamera camera;
     private static final int buttonNo = 2;
