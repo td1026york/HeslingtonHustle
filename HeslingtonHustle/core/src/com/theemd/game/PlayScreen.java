@@ -23,7 +23,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PlayScreen extends ScreenAdapter {
 
-    private String characterSelect;
     Player player;
     Sprite prompt; // for prompting player action when they are near a building
     TiledMap tiledMap;
@@ -50,9 +49,12 @@ public class PlayScreen extends ScreenAdapter {
     BitmapFont font;
     SpriteBatch uiBatch;
 
-
-
-
+    // InteractableLocations
+    InteractableLocation[] locations;
+    final static int EAT_LOCATION = 0;
+    final static int SLEEP_LOCATION = 1;
+    final static int RECREATION_LOCATION = 2;
+    final static int STUDY_LOCATION = 3;
 
 
 
@@ -63,11 +65,23 @@ public class PlayScreen extends ScreenAdapter {
      */
     public PlayScreen(LauncherClass game, int selection){
         this.game = game;
-        characterSelect = Integer.toString(selection);
         // selection for which character from previous screen : collision for character collision detection - set in show method as map is not yet loaded
         player = new Player(selection);
 
+        locations = new InteractableLocation[4];
+        //create new locations and add their activities
+        locations[EAT_LOCATION] = new InteractableLocation();
+        locations[EAT_LOCATION].addActivity(1,2,2,"Eat");
 
+        locations[SLEEP_LOCATION] = new InteractableLocation();
+        //sleep takes 8 hours
+        locations[SLEEP_LOCATION].addActivity(0,3,8,"Go to bed");
+
+        locations[RECREATION_LOCATION] = new InteractableLocation();
+        locations[RECREATION_LOCATION].addActivity(3,2,2,"Have fun");
+
+        locations[STUDY_LOCATION] = new InteractableLocation();
+        locations[STUDY_LOCATION].addActivity(3,10,3,"Study");
     }
 
     @Override
@@ -77,9 +91,6 @@ public class PlayScreen extends ScreenAdapter {
         tiledMap.getLayers().get("Interaction").setOpacity(0); // sets interation layer transparent
         tiledMap.getLayers().get("Map").setOpacity(1); // sets map visible (maybe redundant)
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap,1/mapScale); // sets whole world as wide/tall as map - no need to work in pixels
-
-
-
 
         // spritesheet for character animations - contains four characters. Correct one is selected in player.animate(); - could pass selection here as opposed to constructor
         Texture characters = new Texture(Gdx.files.internal("Characters.png"));
@@ -101,7 +112,6 @@ public class PlayScreen extends ScreenAdapter {
         viewport.apply();
         camera.update(); // updates camera start to initial setup
 
-
         lastAction = System.currentTimeMillis()-5000;
         uiMatrix = camera.combined.cpy();
 
@@ -111,8 +121,6 @@ public class PlayScreen extends ScreenAdapter {
         prompt.setSize(1,1);
         prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
         prompt.setRegion(0,0,109,122);
-
-
 
 
     }
@@ -134,18 +142,19 @@ public class PlayScreen extends ScreenAdapter {
 
 
 
-
         // draws player passing how much time has passed since last frame for player movement and animation
         player.draw(tiledMapRenderer.getBatch(),v);
         prompt.setPosition(player.getX()+player.getWidth(), player.getY()+player.getHeight());
-        if(player.eatDesire()){
 
+        if(player.eatDesire()){
             prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
             prompt.draw(tiledMapRenderer.getBatch());
-        }else if(player.playDesire()){
+        }
+        else if(player.playDesire()){
             prompt.setTexture(new Texture(Gdx.files.internal("play.png")));
             prompt.draw(tiledMapRenderer.getBatch());
-        }else if(player.studyDesire()){
+        }
+        else if(player.studyDesire()){
             prompt.setTexture(new Texture(Gdx.files.internal("study.png")));
             prompt.draw(tiledMapRenderer.getBatch());
         }
@@ -190,7 +199,7 @@ public class PlayScreen extends ScreenAdapter {
 
 
 
-        font.draw(uiBatch, "Score: " + score ,0, Gdx.graphics.getHeight());
+        font.draw(uiBatch, "Predicted Score: " + score ,0, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Energy: " + player.getEnergy() ,Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Time left Today: " + time ,Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Day: " + day +"/7" ,Gdx.graphics.getWidth()/1.3333f, Gdx.graphics.getHeight());
@@ -214,8 +223,7 @@ public class PlayScreen extends ScreenAdapter {
 
     public void game(){
         if(day==8){
-
-            // game finished
+            game.setScreen(new ScoreScreen(game, score));
         }
 
         if(time <=0){
@@ -226,37 +234,44 @@ public class PlayScreen extends ScreenAdapter {
 
         if(player.isAction()&& System.currentTimeMillis() - lastAction > 5000){
             if(player.eatDesire()&& player.getEnergy()>=1){
+                Activity eatActivity = locations[EAT_LOCATION].getActivity(0);
+                if(eatActivity.checkActivity(player.getEnergy(), time)){
+                    eatCount++;
+                    player.setEnergy(player.getEnergy()-eatActivity.getEnergyCost());
+                    time -= eatActivity.getTimeCost();
+                    score += eatActivity.getScoreImpact();
 
-                eatCount++;
-                player.setEnergy(player.getEnergy()-1);
-                time-=2;
-                lastAction = System.currentTimeMillis();
-
+                    lastAction = System.currentTimeMillis();
+                }
             }
+
             if(player.studyDesire()&& player.getEnergy()>=3){
+                Activity studyActivity = locations[STUDY_LOCATION].getActivity(0);
+                if(studyActivity.checkActivity(player.getEnergy(), time)){
+                    studyCount++;
 
-                studyCount++;
-                player.setEnergy(player.getEnergy()-2);
-                time-=3;
-                lastAction = System.currentTimeMillis();
+                    player.setEnergy(player.getEnergy()-studyActivity.getEnergyCost());
+                    time -= studyActivity.getTimeCost();
+                    score += studyActivity.getScoreImpact();
 
+                    lastAction = System.currentTimeMillis();
+                }
             }
+
             if(player.playDesire()&& player.getEnergy()>=2){
+                Activity funActivity = locations[RECREATION_LOCATION].getActivity(0);
+                if(funActivity.checkActivity(player.getEnergy(), time)){
+                    recCount++;
+                    player.setEnergy(player.getEnergy()-funActivity.getEnergyCost());
+                    time -= funActivity.getTimeCost();
+                    score += funActivity.getScoreImpact();
 
-                eatCount++;
-                player.setEnergy(player.getEnergy()-2);
-                time-=2;
-                lastAction = System.currentTimeMillis();
-
+                    lastAction = System.currentTimeMillis();
+                }
             }
-
 
 
         }
-
-
-
-
 
     }
 

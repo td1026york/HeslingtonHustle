@@ -17,8 +17,8 @@ public class LauncherClass extends Game {
         font = new BitmapFont();
         // Creates the first instance of the Main Menu Screen and then displays it.
 
-        //this.setScreen(new Splash(this));
-        this.setScreen(new PlayScreen(this,1));
+        this.setScreen(new Splash(this));
+//        this.setScreen(new PlayScreen(this,1));
     }
 
     public void render() {
