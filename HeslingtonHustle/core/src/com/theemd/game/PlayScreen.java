@@ -76,13 +76,13 @@ public class PlayScreen extends ScreenAdapter {
 
         locations[SLEEP_LOCATION] = new InteractableLocation();
         //sleep takes 8 hours
-        locations[SLEEP_LOCATION].addActivity(0,3,8,"Go to bed");
+        locations[SLEEP_LOCATION].addActivity(-3,0,8,"Go to bed");
 
         locations[RECREATION_LOCATION] = new InteractableLocation();
         locations[RECREATION_LOCATION].addActivity(3,2,2,"Have fun");
 
         locations[STUDY_LOCATION] = new InteractableLocation();
-        locations[STUDY_LOCATION].addActivity(3,10,3,"Study");
+        locations[STUDY_LOCATION].addActivity(6,10,3,"Study");
     }
 
     @Override
