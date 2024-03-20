@@ -24,6 +24,7 @@ public class Player extends Sprite  implements InputProcessor {
     private float animationTime; // for timing walking animation
 
     private TiledMapTileLayer collision;
+    private TiledMapTileLayer interaction;
 
     int energy; // for keeping track of player energy day to day.
 
@@ -36,8 +37,8 @@ public class Player extends Sprite  implements InputProcessor {
     Animation<TextureRegion> still;
 
 
-    public Player(int character, TiledMapTileLayer Collision) {
-        this.collision = Collision; // gets collision tilemap for collision detection
+    public Player(int character) {
+
         this.character = character; // user character choice
         velocity.x = 0;
         velocity.y = 0;
@@ -80,6 +81,10 @@ public class Player extends Sprite  implements InputProcessor {
         this.collision = collision;
     }
 
+    public void setInteraction(TiledMapTileLayer interaction) {
+        this.interaction = interaction;
+    }
+
     // draws sprite - overridden to take in time for update() which calculted character movement and animation
     @Override
     public void draw(Batch batch,float delta) {
@@ -91,13 +96,15 @@ public class Player extends Sprite  implements InputProcessor {
     public void update(float delta){
 
         // gets the coordinates of the cell the character is about to move into
+        // adds half character height and width to set coords to center of characers
         // math.floor may be redundant
-        int newX = (int) Math.floor(getX() + velocity.x * delta);
-        int newY = (int) Math.floor((getY() + velocity.y * delta));
+        int newX = (int) Math.floor(getX() + this.getWidth()/2 + velocity.x * delta);
+        int newY = (int) Math.floor((getY() + this.getHeight()/3+ velocity.y * delta));
 
         // gets the cell based on coords
         Cell cell = collision.getCell(newX,newY);
         // if the cell isn't empty, checks if the cell is blocked, if it is, player position is not updated
+
         if (cell !=null && !cell.getTile().getProperties().containsKey("blocked") ){
             setX(getX() + velocity.x * delta);
             setY(getY() + velocity.y * delta);
@@ -116,8 +123,29 @@ public class Player extends Sprite  implements InputProcessor {
 
     }
 
+    public boolean eatDesire(){
+        Cell cell = interaction.getCell((int) getX(), (int) getY());
+        return (cell !=null && cell.getTile().getProperties().containsKey("eat")) ;
 
 
+    }
+
+    public boolean studyDesire(){
+        Cell cell = interaction.getCell((int) getX(), (int) getY());
+        return  (cell !=null && cell.getTile().getProperties().containsKey("study")) ;
+
+
+    }
+    public boolean playDesire(){
+        Cell cell = interaction.getCell((int) getX(), (int) getY());
+        return cell !=null && cell.getTile().getProperties().containsKey("play");
+
+
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
 
     @Override
     public boolean keyDown(int keycode) {

@@ -2,9 +2,12 @@ package com.theemd.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -19,23 +22,26 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.HexagonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Ellipse;
-import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.awt.*;
 
 
 public class PlayScreen extends ScreenAdapter {
 
     private String characterSelect;
     Player player;
+    Sprite prompt; // for prompting player action when they are near a building
     TiledMap tiledMap;
     OrthogonalTiledMapRenderer tiledMapRenderer;
     OrthographicCamera camera;
+    Matrix4 uiMatrix;
     Viewport viewport;
     LauncherClass game;
     //variables to track resources
@@ -45,11 +51,16 @@ public class PlayScreen extends ScreenAdapter {
     int recCount = 0;
     //variable to track the current score of the user
     int score = 30;
+    int day = 0;
+    int time = 16;
 
 
     float mapWidth = 40, mapHeight = 30;
     float mapScale = 32;// pixels to a tile (square in this case)
     float portWidth = 10, portHeight = 7.5f; // how much map is seen at once (1/4 in this case)
+
+    BitmapFont font;
+    SpriteBatch uiBatch;
 
 
 
@@ -66,7 +77,7 @@ public class PlayScreen extends ScreenAdapter {
         this.game = game;
         characterSelect = Integer.toString(selection);
         // selection for which character from previous screen : collision for character collision detection - set in show method as map is not yet loaded
-        player = new Player(selection,null);
+        player = new Player(selection);
 
 
     }
@@ -81,22 +92,37 @@ public class PlayScreen extends ScreenAdapter {
 
 
 
+
         // spritesheet for character animations - contains four characters. Correct one is selected in player.animate(); - could pass selection here as opposed to constructor
         Texture characters = new Texture(Gdx.files.internal("Characters.png"));
         player.setSize(.5f,.5f); // set size of character (half a tile of the map in this case);
         player.animate(characters); // created animations in player based on the character the user has chosen
         player.setPosition(20,15f);
         player.setCollision((TiledMapTileLayer) tiledMap.getLayers().get("Collision"));
+        player.setInteraction((TiledMapTileLayer) tiledMap.getLayers().get("Interaction"));
         Gdx.input.setInputProcessor(player); // player can now move themselves
 
 
-
+        font = new BitmapFont();
+        font.setColor(Color.BLUE);
 
         // created camera and viewport  - viewport as large as portWidth/Height
         camera = new OrthographicCamera( );
-        viewport = new FitViewport(10,7.5f,camera);
+        viewport = new FitViewport(portWidth,portHeight,camera);
+       // viewport = new FitViewport(40,30,camera);
         viewport.apply();
         camera.update(); // updates camera start to initial setup
+
+
+
+        uiMatrix = camera.combined.cpy();
+
+        uiBatch = new SpriteBatch();
+
+        prompt = new Sprite();
+        prompt.setSize(1,1);
+        prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
+        prompt.setRegion(0,0,109,122);
 
 
 
@@ -111,7 +137,7 @@ public class PlayScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
+        viewport.apply();
         // renders map based on camera
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
@@ -119,9 +145,27 @@ public class PlayScreen extends ScreenAdapter {
 
 
 
+
         // draws player passing how much time has passed since last frame for player movement and animation
         player.draw(tiledMapRenderer.getBatch(),v);
+        prompt.setPosition(player.getX()+player.getWidth(), player.getY()+player.getHeight());
+        if(player.eatDesire()){
+            System.out.println(true);
+            prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
+            prompt.draw(tiledMapRenderer.getBatch());
+        }else if(player.playDesire()){
+            prompt.setTexture(new Texture(Gdx.files.internal("play.png")));
+            prompt.draw(tiledMapRenderer.getBatch());
+        }else if(player.studyDesire()){
+            prompt.setTexture(new Texture(Gdx.files.internal("study.png")));
+            prompt.draw(tiledMapRenderer.getBatch());
+        }
+
+
+
         tiledMapRenderer.getBatch().end();
+
+
 
 
         /* - ensured camera stays within bound of map when player gets close to the edge
@@ -133,14 +177,43 @@ public class PlayScreen extends ScreenAdapter {
         */
         boolean x = player.getX() + portWidth/2 + player.getWidth() <= mapWidth && player.getX() - portWidth/2 > 0;
         boolean y = player.getY()+portHeight/2 +player.getWidth() < mapHeight && player.getY() - portHeight/2 >0; // same as above for y im not typing that out again
+        viewport.apply();
         if(x){
             camera.position.set(player.getX() + player.getWidth() / 2, camera.position.y, 0);
+
+           // uiCamera.position.set((player.getX() + player.getWidth() / 2)*mapScale,     (uiCamera.position.y)*mapScale, 0);
         }
         if(y) {
             camera.position.set(camera.position.x, player.getY() + player.getHeight() / 2, 0);
+
+          //  uiCamera.position.set((uiCamera.position.x)*mapScale, (player.getY() + player.getHeight() / 2)*mapScale, 0);
         }
 
         camera.update(); // updated camera - changes position if above was true
+
+
+
+
+        uiMatrix.setToOrtho2D(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        uiBatch.setProjectionMatrix(uiMatrix);
+
+        uiBatch.begin();
+
+
+
+        font.draw(uiBatch, "Score: " + score ,0, Gdx.graphics.getHeight());
+        font.draw(uiBatch, "Energy: " + player.getEnergy() ,Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight());
+        font.draw(uiBatch, "Time left Today: " + time ,Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight());
+        font.draw(uiBatch, "Day: " + day +"/7" ,Gdx.graphics.getWidth()/1.3333f, Gdx.graphics.getHeight());
+
+
+
+
+
+        uiBatch.end();
+
+
+
         //renderInteractableAreas(); Dont uncomment it crashes
 
     }
@@ -148,6 +221,8 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void resize(int i, int i1) {
         viewport.update(i,i1);
+
+
     }
 
     @Override
