@@ -94,7 +94,7 @@ public class PlayScreen extends ScreenAdapter {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap,1/mapScale); // sets whole world as wide/tall as map - no need to work in pixels
 
         // spritesheet for character animations - contains four characters. Correct one is selected in player.animate(); - could pass selection here as opposed to constructor
-        Texture characters = new Texture(Gdx.files.internal("Characters.png"));
+        Texture characters = new Texture(Gdx.files.internal("characters.png"));
         player.setSize(1f,1f); // set size of character (half a tile of the map in this case);
         player.animate(characters); // created animations in player based on the character the user has chosen
         player.setPosition(20,10f);
@@ -120,7 +120,7 @@ public class PlayScreen extends ScreenAdapter {
 
         prompt = new Sprite();
         prompt.setSize(1,1);
-        prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
+        prompt.setTexture(new Texture(Gdx.files.internal("Eat.png")));
         prompt.setRegion(0,0,109,122);
 
         energyRenderTimer = 0;
@@ -174,7 +174,7 @@ public class PlayScreen extends ScreenAdapter {
         // sets the texture of the prompt depending on which interactable location the player is currently near
         // the prompt is only drawn when a player is near a location
         if(player.eatDesire()){
-            prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
+            prompt.setTexture(new Texture(Gdx.files.internal("Eat.png")));
             prompt.draw(tiledMapRenderer.getBatch());
         }
         else if(player.playDesire()){
@@ -182,7 +182,7 @@ public class PlayScreen extends ScreenAdapter {
             prompt.draw(tiledMapRenderer.getBatch());
         }
         else if(player.studyDesire()){
-            prompt.setTexture(new Texture(Gdx.files.internal("study.png")));
+            prompt.setTexture(new Texture(Gdx.files.internal("Study.png")));
             prompt.draw(tiledMapRenderer.getBatch());
         }
         else if(player.sleepDesire()){

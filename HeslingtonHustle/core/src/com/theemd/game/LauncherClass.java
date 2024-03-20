@@ -1,5 +1,6 @@
 package com.theemd.game;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * LauncherClass to be run first when the game is opened.
  * Creates a new instance of the class MainMenuScreen and then sets the current screen to it.
  */
-public class LauncherClass extends Game {
+public class LauncherClass extends Game implements ApplicationListener {
     SpriteBatch batch;
     BitmapFont font;
 
