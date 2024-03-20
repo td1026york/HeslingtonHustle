@@ -1,7 +1,6 @@
 package com.theemd.game;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,28 +8,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
-import com.badlogic.gdx.maps.tiled.renderers.HexagonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import java.awt.*;
 
 
 public class PlayScreen extends ScreenAdapter {
@@ -53,7 +41,7 @@ public class PlayScreen extends ScreenAdapter {
     int score = 30;
     int day = 0;
     int time = 16;
-
+    long lastAction =0;
 
     float mapWidth = 40, mapHeight = 30;
     float mapScale = 32;// pixels to a tile (square in this case)
@@ -150,7 +138,7 @@ public class PlayScreen extends ScreenAdapter {
         player.draw(tiledMapRenderer.getBatch(),v);
         prompt.setPosition(player.getX()+player.getWidth(), player.getY()+player.getHeight());
         if(player.eatDesire()){
-            System.out.println(true);
+
             prompt.setTexture(new Texture(Gdx.files.internal("eat.png")));
             prompt.draw(tiledMapRenderer.getBatch());
         }else if(player.playDesire()){
@@ -181,12 +169,12 @@ public class PlayScreen extends ScreenAdapter {
         if(x){
             camera.position.set(player.getX() + player.getWidth() / 2, camera.position.y, 0);
 
-           // uiCamera.position.set((player.getX() + player.getWidth() / 2)*mapScale,     (uiCamera.position.y)*mapScale, 0);
+
         }
         if(y) {
             camera.position.set(camera.position.x, player.getY() + player.getHeight() / 2, 0);
 
-          //  uiCamera.position.set((uiCamera.position.x)*mapScale, (player.getY() + player.getHeight() / 2)*mapScale, 0);
+
         }
 
         camera.update(); // updated camera - changes position if above was true
@@ -206,6 +194,10 @@ public class PlayScreen extends ScreenAdapter {
         font.draw(uiBatch, "Time left Today: " + time ,Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight());
         font.draw(uiBatch, "Day: " + day +"/7" ,Gdx.graphics.getWidth()/1.3333f, Gdx.graphics.getHeight());
 
+        font.draw(uiBatch, "Sleep Count: " + sleepCount ,0, 15);
+        font.draw(uiBatch, "Study Count: " + studyCount ,Gdx.graphics.getWidth()/4f, 15);
+        font.draw(uiBatch, "Recreation Count: " + recCount ,Gdx.graphics.getWidth()/2f, 15);
+        font.draw(uiBatch, "Eat Count" + eatCount ,Gdx.graphics.getWidth()/1.3333f, 15);
 
 
 
@@ -215,6 +207,25 @@ public class PlayScreen extends ScreenAdapter {
 
 
         //renderInteractableAreas(); Dont uncomment it crashes
+
+    }
+
+
+    public void game(){
+        if(day==8){
+
+            // game finished
+        }
+
+        if(time ==0){
+            day ++;
+            player.setEnergy(10);
+            time = 16;
+        }
+
+
+        lastAction = System.currentTimeMillis();
+
 
     }
 

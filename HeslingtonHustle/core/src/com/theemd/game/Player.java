@@ -28,6 +28,8 @@ public class Player extends Sprite  implements InputProcessor {
 
     int energy; // for keeping track of player energy day to day.
 
+    boolean action = false; // for whether or not the player is pressing e and acting
+
 
     // self-explanatory icl
     Animation<TextureRegion>  upWalking;
@@ -147,6 +149,10 @@ public class Player extends Sprite  implements InputProcessor {
         return energy;
     }
 
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         switch(keycode) {
@@ -165,6 +171,9 @@ public class Player extends Sprite  implements InputProcessor {
             case Keys.D:
                 velocity.x = speed;
                 animationTime = 0;
+                break;
+            case Keys.E:
+                action = true;
         }
         return true;
 
@@ -184,9 +193,16 @@ public class Player extends Sprite  implements InputProcessor {
             case Keys.S:
                 velocity.y = 0;
                 animationTime = 0;
+                break;
+            case Keys.E:
+                action = true;
 
         }
         return true;
+    }
+
+    public boolean isAction() {
+        return action;
     }
 
     public void animate(Texture temp){
