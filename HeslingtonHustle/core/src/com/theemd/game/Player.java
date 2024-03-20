@@ -30,7 +30,9 @@ public class Player extends Sprite  implements InputProcessor {
 
     int energy; // for keeping track of player energy day to day.
 
-    boolean action = false; // for whether or not the player is pressing e and acting
+    boolean action = false; // for whether or not the player is pressing e and actin
+
+    boolean musicPlaying = true;
 
 
     // self-explanatory icl
@@ -215,6 +217,9 @@ public class Player extends Sprite  implements InputProcessor {
                 break;
             case Keys.E:
                 action = true;
+                break;
+            case Keys.M:
+                if(musicPlaying){Resources.music.stop(); musicPlaying=false; }else{Resources.music.play(); musicPlaying=true;}
         }
         return true;
 
