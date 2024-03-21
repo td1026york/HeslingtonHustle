@@ -73,18 +73,4 @@ public class Activity {
     public String getPopupString() {
         return popupString;
     }
-
-    public void setPopupString(String popupString) {
-        this.popupString = popupString;
-    }
-
-    public Activity returnSelf(){
-        return (this);
-    }
-    public void openPopup(){
-        TextField text = new TextField(this.popupString, new Skin());
-        Table popup = new Table();
-        popup.add(text).width(100);
-    }
-
 }

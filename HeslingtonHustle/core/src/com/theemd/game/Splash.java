@@ -14,6 +14,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.lang.Math;
 import java.security.PublicKey;
 
+/**
+ * Makes the logo fade in and out
+ */
 public class Splash extends ScreenAdapter {
 
 

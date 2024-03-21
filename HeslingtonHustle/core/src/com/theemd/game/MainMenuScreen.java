@@ -67,13 +67,11 @@ public class MainMenuScreen implements Screen {
             for (int i = 0; i < buttonNo; i++) {
                 if (buttons[i].contains(touchPoint.x, touchPoint.y)) {
                     if(i==1){
-//                        System.out.println("Top button");
                         game.setScreen(new CharacterSelectScreen(game));
                         this.dispose();
                     }
                     else
                     {
-//                        System.out.println("Bottom button");
                         game.setScreen(new HelpScreen(game));
                     }
                     break;
@@ -139,7 +137,6 @@ public class MainMenuScreen implements Screen {
         // Calculate quadrant size and positions
 
         //size - Leaves 50 units top and bottom for confirmation button and prompt for user
-//        float quadrantWidth = worldWidth / 2f;
         float quadrantHeight = (worldHeight - 100)/ 2f;
 
         // positions

@@ -141,10 +141,6 @@ public class Player extends Sprite  implements InputProcessor {
 
     }
 
-    /**
-     *
-     * @return
-     */
     public boolean eatDesire(){
         Cell cell = interaction.getCell((int) getX(), (int) getY());
         return (cell !=null && cell.getTile().getProperties().containsKey("eat")) ;
@@ -152,10 +148,6 @@ public class Player extends Sprite  implements InputProcessor {
 
     }
 
-    /**
-     *
-     * @return
-     */
     public boolean studyDesire(){
         Cell cell = interaction.getCell((int) getX(), (int) getY());
         return  (cell !=null && cell.getTile().getProperties().containsKey("study")) ;
@@ -163,19 +155,11 @@ public class Player extends Sprite  implements InputProcessor {
 
     }
 
-    /**
-     *
-     * @return
-     */
     public boolean playDesire(){
         Cell cell = interaction.getCell((int) getX(), (int) getY());
         return cell !=null && cell.getTile().getProperties().containsKey("play");
     }
 
-    /**
-     *
-     * @return
-     */
     public boolean sleepDesire(){
         Cell cell = interaction.getCell((int) getX(), (int) getY());
         return cell !=null && cell.getTile().getProperties().containsKey("sleep");
@@ -247,7 +231,9 @@ public class Player extends Sprite  implements InputProcessor {
         return true;
     }
 
-    //Returns whether player is pressing e and want to do an action
+    /**
+    Returns whether player is pressing e and want to do an action
+     */
     public boolean isAction() {
         return action;
     }

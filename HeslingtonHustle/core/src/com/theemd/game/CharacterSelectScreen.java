@@ -139,7 +139,6 @@ public class CharacterSelectScreen implements Screen {
                 if (confirmation.contains(touchPoint.x, touchPoint.y)) {
 
                     game.setScreen(new PlayScreen(game,selection));
-//                    game.setScreen(new PlayScreen(game,selection));
                     this.dispose();
                 }
             }

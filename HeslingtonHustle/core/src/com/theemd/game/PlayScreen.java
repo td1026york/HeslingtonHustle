@@ -18,7 +18,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.awt.*;
 
-
+/**
+ * Screen that displays the game to the player
+ */
 public class PlayScreen extends ScreenAdapter {
 
     Player player;
@@ -205,7 +207,7 @@ public class PlayScreen extends ScreenAdapter {
               or up and down if they are in edges of map
         */
         boolean x = player.getX() + portWidth/2 + player.getWidth() <= mapWidth && player.getX() - portWidth/2 > 0;
-        boolean y = player.getY()+portHeight/2 +player.getWidth() < mapHeight && player.getY() - portHeight/2 >0; // same as above for y im not typing that out again
+        boolean y = player.getY()+portHeight/2 +player.getWidth() < mapHeight && player.getY() - portHeight/2 >0; // same as above for y
         viewport.apply();
         if(x){
             camera.position.set(player.getX() + player.getWidth() / 2, camera.position.y, 0);
@@ -236,7 +238,7 @@ public class PlayScreen extends ScreenAdapter {
             if (energyRenderTimer>=2f){
                 // after two seconds pass of energy being red
                 font.setColor(Color.BLUE); // sets font back to blue
-                energy = true; // sets this to true so they have to try agaijn for it to turn red again
+                energy = true; // sets this to true so they have to try again for it to turn red again
                 energyRenderTimer =0; // resets timer
             }
         }
@@ -258,7 +260,9 @@ public class PlayScreen extends ScreenAdapter {
         uiBatch.end();
     }
 
-    // runs the actual character interaction with the map and their stats
+    /**
+    runs the actual character interaction with the map and their stats**/
+
     public void game(){
         // ends game after 7 days
         if(day==8){

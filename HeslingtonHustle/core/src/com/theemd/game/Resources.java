@@ -3,6 +3,9 @@ package com.theemd.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
+/**
+ * Contains music for the game
+ */
 public class Resources {
     public static Music music;
     public Resources() {}
