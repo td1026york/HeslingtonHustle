@@ -75,8 +75,8 @@ public class PlayScreen extends ScreenAdapter {
         locations[EAT_LOCATION].addActivity(1,2,2,"Eat");
 
         locations[SLEEP_LOCATION] = new InteractableLocation();
-        //sleep takes 8 hours
-        locations[SLEEP_LOCATION].addActivity(-3,0,8,"Go to bed");
+        //sleep takes 16 hours to ensure it moves to next day
+        locations[SLEEP_LOCATION].addActivity(-3,0,16,"Go to bed");
 
         locations[RECREATION_LOCATION] = new InteractableLocation();
         locations[RECREATION_LOCATION].addActivity(3,2,2,"Have fun");
@@ -359,7 +359,8 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-
+        tiledMap.dispose();
+        tiledMapRenderer.dispose();
     }
    
 }
